@@ -1,27 +1,21 @@
 {
-  "name": "push",
+  "name": "ecommerce",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ChuBaka13321/Push.git"
+    "url": "git+https://github.com/ChuBaka13321/ecommerce.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ChuBaka13321/Push/issues"
+    "url": "https://github.com/ChuBaka13321/ecommerce/issues"
   },
-  "homepage": "https://github.com/ChuBaka13321/Push#readme",
-  "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0"
-  },
+  "homepage": "https://github.com/ChuBaka13321/ecommerce#readme",
   "devDependencies": {
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.4",
@@ -29,5 +23,11 @@
     "babel-preset-react": "^6.11.1",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "react-router": "^2.8.0"
   }
 }
