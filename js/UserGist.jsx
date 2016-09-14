@@ -31,18 +31,29 @@ var UserGist = React.createClass({
   },
 
   render: function() {
+    let divStyle = {
+      display: "inline-block",
+      WebkitTransition: 'all', // note the capital 'W' here
+      msTransition: 'all' // 'ms' is the only lowercase vendor prefix
+    };
     let titles = this.state.imgurData.map(function(item) {
+      let subLink;
+      if(item.cover) {
+        subLink = "http://i.imgur.com/" + item.cover + "b.jpg";
+      } else {
+        let len = item.link.length;
+        subLink = item.link.substr(0, len-4) + "b" + item.link.substr(len-4, len);
+      }
       return (
-        <li key={item.id}>
-          <a href={item.link}>{item.link}</a>
-        </li>
+        <div key={item.id} style={divStyle}>
+          <img alt="" src={subLink} height="250px" width="250px" />
+          
+        </div>
       );
     });
     return (
       <div>
-        <ul>
-          {titles}
-        </ul>
+        {titles}
       </div>
     );
   }

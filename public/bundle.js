@@ -81,25 +81,31 @@
 	  },
 
 	  render: function render() {
+	    var divStyle = {
+	      display: "inline-block",
+	      WebkitTransition: 'all', // note the capital 'W' here
+	      msTransition: 'all' // 'ms' is the only lowercase vendor prefix
+	    };
 	    var titles = this.state.imgurData.map(function (item) {
+	      var subLink = void 0;
+	      if (item.cover) {
+	        subLink = "http://i.imgur.com/" + item.cover + "b.jpg";
+	      } else {
+	        // subLink = item.link.substr(5,item.link.length);
+	        // <a alt href={subLink}>{subLink}</a>
+	        var len = item.link.length;
+	        subLink = item.link.substr(0, len - 4) + "b" + item.link.substr(len - 4, len);
+	      }
 	      return React.createElement(
-	        'li',
-	        { key: item.id },
-	        React.createElement(
-	          'a',
-	          { href: item.link },
-	          item.link
-	        )
+	        'div',
+	        { key: item.id, style: divStyle },
+	        React.createElement('img', { alt: '', src: subLink, height: '250px', width: '250px' })
 	      );
 	    });
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(
-	        'ul',
-	        null,
-	        titles
-	      )
+	      titles
 	    );
 	  }
 	});
