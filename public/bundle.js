@@ -91,8 +91,6 @@
 	      if (item.cover) {
 	        subLink = "http://i.imgur.com/" + item.cover + "b.jpg";
 	      } else {
-	        // subLink = item.link.substr(5,item.link.length);
-	        // <a alt href={subLink}>{subLink}</a>
 	        var len = item.link.length;
 	        subLink = item.link.substr(0, len - 4) + "b" + item.link.substr(len - 4, len);
 	      }
@@ -110,7 +108,7 @@
 	  }
 	});
 
-	ReactDOM.render(React.createElement(UserGist, { source: 'https://api.github.com/users/octocat/gists' }), document.getElementById('app'));
+	ReactDOM.render(React.createElement(UserGist, null), document.getElementById('app'));
 
 /***/ },
 /* 1 */
