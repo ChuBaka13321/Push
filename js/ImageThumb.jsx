@@ -1,4 +1,5 @@
 const React = require('react')
+const { Link } = require('react-router')
 
 const ImageThumb = React.createClass({
   render(){
@@ -18,13 +19,14 @@ const ImageThumb = React.createClass({
       subLink = props.link.substr(0, len-4) + "b" + props.link.substr(len-4, len);
       aLink = props.link.substr(0, len-4) + props.link.substr(len-4, len);
     }
+    console.log(props)
 
     return (
-      <div style={divStyle}>
-        <a href = {aLink}>
+      <Link to={{pathname: `/details/${this.props.id}`, state: props}}>
+        <div style={divStyle}>
           <img alt="" src={subLink} height="250px" width="250px" />
-        </a>
-      </div>
+        </div>
+      </Link>
     )
   }
 })
