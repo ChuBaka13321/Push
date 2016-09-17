@@ -19,10 +19,9 @@ const ImageThumb = React.createClass({
       subLink = props.link.substr(0, len-4) + "b" + props.link.substr(len-4, len);
       aLink = props.link.substr(0, len-4) + props.link.substr(len-4, len);
     }
-    console.log(props)
-
+    
     return (
-      <Link to={{pathname: `/details/${this.props.id}`, state: props}}>
+      <Link to={`/details/${this.props.id}`}>
         <div style={divStyle}>
           <img alt="" src={subLink} height="250px" width="250px" />
         </div>

@@ -2,7 +2,18 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const Landing = require('./Landing');
 const Details = require('./Details')
-const { Router, Route, hashHistory } = require('react-router');
+const { Router, Route, hashHistory, IndexRoute } = require('react-router');
+const { store } = require('./Store')
+const { Provider } = require('react-redux')
+
+// const routes = [{
+//   path: '/',
+//   component: Landing
+// }, {
+//   path: '/details/:id',
+//   component: Details
+// }]
+// routes = {routes}
 
 const App = React.createClass({
   // assignImage (nextState, replace) {
@@ -17,10 +28,12 @@ const App = React.createClass({
   // },
   render() {
     return(
-      <Router history={hashHistory}>        
-        <Route path='/' component={Landing} />
-        <Route path='/details/:id' component={Details} />
-      </Router>
+      <Provider store={store}>
+        <Router history={hashHistory}>
+          <Route path = '/' component={Landing}/>
+          <Route path='/details/:id' component={Details}/>
+        </Router> 
+      </Provider>  
     )
   }
 })
