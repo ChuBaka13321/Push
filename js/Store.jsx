@@ -33,7 +33,6 @@ const getImages = (dispatch) => {
 }
 
 const setImagesState = (state, data) => {
-    console.log(data, 'new state?')
     const newState = {};
     Object.assign(newState, state, {images: data})
     return newState;
