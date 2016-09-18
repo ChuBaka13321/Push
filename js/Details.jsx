@@ -1,5 +1,6 @@
 const React = require('react');
 const SaveFavorites = require('./SaveFavorites')
+const { Link } = require('react-router')
 const { connector } = require('./Store');
 
 const Details = React.createClass({
@@ -24,6 +25,9 @@ const Details = React.createClass({
         <img alt="" src={link} height="350px" width="350px" />
         <p>{description}</p>
         <SaveFavorites imageID = {this.props.params.id}/>
+        <Link to={`/favorites`}>
+          <h2>Favorites Page</h2>
+        </Link>
       </div>
     )
   }
