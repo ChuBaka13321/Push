@@ -1,14 +1,10 @@
 const React = require('react')
+const Header = require('./Header');
 const { Link } = require('react-router')
 
 const ImageThumb = React.createClass({
   render(){
     let props = this.props;
-    let divStyle = {
-      display: "inline-block",
-      WebkitTransition: 'all', // note the capital 'W' here
-      msTransition: 'all' // 'ms' is the only lowercase vendor prefix
-    };
     let subLink;
     let aLink;
     if(props.cover) {
@@ -22,7 +18,7 @@ const ImageThumb = React.createClass({
     
     return (
       <Link to={`/details/${this.props.id}`}>
-        <div style={divStyle}>
+        <div className="images">
           <img alt="" src={subLink} height="250px" width="250px" />
         </div>
       </Link>

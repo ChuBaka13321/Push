@@ -1,6 +1,6 @@
 const React = require('react');
-const SaveFavorites = require('./SaveFavorites')
-const { Link } = require('react-router')
+const SaveFavorites = require('./SaveFavorites');
+const Header = require('./Header');
 const { connector } = require('./Store');
 
 const Details = React.createClass({
@@ -20,14 +20,14 @@ const Details = React.createClass({
     console.log('hi');
     const { title, link, description } = this.assignImage(this.props.params.id);
     return (
-      <div style={{textAlign: 'left'}}>
-        <h1>{title}</h1>
-        <img alt="" src={link} height="350px" width="350px" />
-        <p>{description}</p>
-        <SaveFavorites imageID = {this.props.params.id}/>
-        <Link to={`/favorites`}>
-          <h2>Favorites Page</h2>
-        </Link>
+      <div className="container">
+        <Header />
+        <div className="details">
+          <h2>{title}</h2>
+          <img alt="" src={link} className="detailsImage" />
+          <p>{description}</p>
+          <SaveFavorites imageID = {this.props.params.id}/>
+        </div>
       </div>
     )
   }

@@ -1,3 +1,56 @@
 html, body {
   text-align: center;
 }
+
+.container {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  overflow-y: scroll;
+  background-color: rgba(220, 220, 220, .8);
+  padding: 15px 30px;
+  border-radius: 5px;
+}
+
+.header + .imageGallery, .header + .details {
+  margin-top: 50px;
+}
+
+.header {
+  z-index: 10;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  height: 50px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  /*testing out colors*/
+  color: LightSkyBlue;
+  background-color: black;
+  /*padding: 10px;*/
+}
+
+.header-item {
+  padding: 15px;
+}
+
+.headerLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.images {
+  display: inline-block;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.detailsImage {
+  max-width: 450px;
+}
