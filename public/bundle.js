@@ -21438,8 +21438,8 @@
 
 	var React = __webpack_require__(1);
 	var Landing = __webpack_require__(176);
-	var Details = __webpack_require__(265);
-	var Favorites = __webpack_require__(267);
+	var Details = __webpack_require__(266);
+	var Favorites = __webpack_require__(268);
 
 	var _require = __webpack_require__(179);
 
@@ -21447,11 +21447,11 @@
 	var Route = _require.Route;
 	var browserHistory = _require.browserHistory;
 
-	var _require2 = __webpack_require__(242);
+	var _require2 = __webpack_require__(243);
 
 	var store = _require2.store;
 
-	var _require3 = __webpack_require__(257);
+	var _require3 = __webpack_require__(258);
 
 	var Provider = _require3.Provider;
 
@@ -21503,11 +21503,10 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(35);
 	var ImageThumb = __webpack_require__(177);
 	var Header = __webpack_require__(178);
 
-	var _require = __webpack_require__(242);
+	var _require = __webpack_require__(243);
 
 	var connector = _require.connector;
 
@@ -21531,7 +21530,7 @@
 	      React.createElement(Header, null),
 	      React.createElement(
 	        'div',
-	        { className: 'imageGallery' },
+	        { className: 'content' },
 	        React.createElement(
 	          'h2',
 	          null,
@@ -21606,6 +21605,7 @@
 
 	var Link = _require.Link;
 
+	var ModalTest = __webpack_require__(242);
 
 	var Header = React.createClass({
 	  displayName: 'Header',
@@ -21629,13 +21629,18 @@
 	      React.createElement(
 	        'div',
 	        { className: 'header-item' },
+	        React.createElement(ModalTest, null)
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'header-item' },
 	        React.createElement(
 	          Link,
 	          { to: '/favorites', className: 'headerLink' },
 	          React.createElement(
 	            'h2',
 	            null,
-	            'Favorites Page'
+	            'Favorites'
 	          )
 	        )
 	      )
@@ -27305,13 +27310,98 @@
 /* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var ModalTest = React.createClass({
+	  displayName: "ModalTest",
+
+
+	  openModal: function openModal() {
+	    this.refs.testingRef.style.display = "block";
+	  },
+
+	  closeModal: function closeModal() {
+	    this.refs.testingRef.style.display = "none";
+	  },
+
+	  //clickoutside of the modal, closes it
+	  clickOutside: function clickOutside(event) {
+	    if (event.target === this.refs.testingRef) {
+	      this.refs.testingRef.style.display = "none";
+	    }
+	    console.log(event.target === this.refs.testingRef);
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    window.addEventListener('click', this.clickOutside);
+	  },
+
+	  componentWillUnmount: function componentWillUnmount() {
+	    window.removeEventListener('click', this.clickOutside);
+	  },
+
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "button",
+	        { id: "myBtn", onClick: this.openModal },
+	        "SignUp"
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "myModal", className: "modal", ref: "testingRef" },
+	        React.createElement(
+	          "div",
+	          { className: "modal-content" },
+	          React.createElement(
+	            "span",
+	            { className: "close", onClick: this.closeModal },
+	            "x"
+	          ),
+	          React.createElement(
+	            "form",
+	            { id: "myform", method: "post" },
+	            React.createElement(
+	              "label",
+	              null,
+	              "Username"
+	            ),
+	            React.createElement("input", { type: "text", name: "nameForm", id: "usernameForm", required: true }),
+	            React.createElement(
+	              "label",
+	              null,
+	              "Password"
+	            ),
+	            React.createElement("input", { type: "text", name: "passForm", id: "passwordForm", required: true }),
+	            React.createElement(
+	              "button",
+	              { type: "submit", id: "mysubmit" },
+	              "Submit"
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = ModalTest;
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var redux = __webpack_require__(243);
-	var reactRedux = __webpack_require__(257);
-	var $ = __webpack_require__(264);
+	var redux = __webpack_require__(244);
+	var reactRedux = __webpack_require__(258);
+	var $ = __webpack_require__(265);
 	var clientId = '3fe8ad5fb43ef74';
 
 	var GET_IMAGES = 'getImages';
@@ -27347,7 +27437,9 @@
 	};
 
 	var setImagesState = function setImagesState(state, data) {
+	  // creating newState as to not 'mutate' current state
 	  var newState = {};
+	  // adding the imgur data under images key
 	  Object.assign(newState, state, { images: data });
 	  return newState;
 	};
@@ -27374,7 +27466,7 @@
 	module.exports = { connector: connector, store: store, rootReducer: rootReducer };
 
 /***/ },
-/* 243 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27382,27 +27474,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 
-	var _createStore = __webpack_require__(244);
+	var _createStore = __webpack_require__(245);
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(252);
+	var _combineReducers = __webpack_require__(253);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(254);
+	var _bindActionCreators = __webpack_require__(255);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(255);
+	var _applyMiddleware = __webpack_require__(256);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(256);
+	var _compose = __webpack_require__(257);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(253);
+	var _warning = __webpack_require__(254);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -27426,7 +27518,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 244 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27435,11 +27527,11 @@
 	exports.ActionTypes = undefined;
 	exports['default'] = createStore;
 
-	var _isPlainObject = __webpack_require__(245);
+	var _isPlainObject = __webpack_require__(246);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _symbolObservable = __webpack_require__(249);
+	var _symbolObservable = __webpack_require__(250);
 
 	var _symbolObservable2 = _interopRequireDefault(_symbolObservable);
 
@@ -27692,11 +27784,11 @@
 	}
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getPrototype = __webpack_require__(246),
-	    isObjectLike = __webpack_require__(248);
+	var getPrototype = __webpack_require__(247),
+	    isObjectLike = __webpack_require__(249);
 
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -27766,10 +27858,10 @@
 
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(247);
+	var overArg = __webpack_require__(248);
 
 	/** Built-in value references. */
 	var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -27778,7 +27870,7 @@
 
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports) {
 
 	/**
@@ -27799,7 +27891,7 @@
 
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports) {
 
 	/**
@@ -27834,14 +27926,14 @@
 
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(250);
+	module.exports = __webpack_require__(251);
 
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -27850,7 +27942,7 @@
 		value: true
 	});
 
-	var _ponyfill = __webpack_require__(251);
+	var _ponyfill = __webpack_require__(252);
 
 	var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
@@ -27869,7 +27961,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27897,7 +27989,7 @@
 	};
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27905,13 +27997,13 @@
 	exports.__esModule = true;
 	exports['default'] = combineReducers;
 
-	var _createStore = __webpack_require__(244);
+	var _createStore = __webpack_require__(245);
 
-	var _isPlainObject = __webpack_require__(245);
+	var _isPlainObject = __webpack_require__(246);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(253);
+	var _warning = __webpack_require__(254);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -28045,7 +28137,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28075,7 +28167,7 @@
 	}
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28131,7 +28223,7 @@
 	}
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28142,7 +28234,7 @@
 
 	exports['default'] = applyMiddleware;
 
-	var _compose = __webpack_require__(256);
+	var _compose = __webpack_require__(257);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -28194,7 +28286,7 @@
 	}
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28237,7 +28329,7 @@
 	}
 
 /***/ },
-/* 257 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28245,11 +28337,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 
-	var _Provider = __webpack_require__(258);
+	var _Provider = __webpack_require__(259);
 
 	var _Provider2 = _interopRequireDefault(_Provider);
 
-	var _connect = __webpack_require__(261);
+	var _connect = __webpack_require__(262);
 
 	var _connect2 = _interopRequireDefault(_connect);
 
@@ -28259,7 +28351,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 258 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28269,11 +28361,11 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(259);
+	var _storeShape = __webpack_require__(260);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
-	var _warning = __webpack_require__(260);
+	var _warning = __webpack_require__(261);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -28343,7 +28435,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28359,7 +28451,7 @@
 	});
 
 /***/ },
-/* 260 */
+/* 261 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28388,7 +28480,7 @@
 	}
 
 /***/ },
-/* 261 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -28400,23 +28492,23 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(259);
+	var _storeShape = __webpack_require__(260);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
-	var _shallowEqual = __webpack_require__(262);
+	var _shallowEqual = __webpack_require__(263);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _wrapActionCreators = __webpack_require__(263);
+	var _wrapActionCreators = __webpack_require__(264);
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _warning = __webpack_require__(260);
+	var _warning = __webpack_require__(261);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _isPlainObject = __webpack_require__(245);
+	var _isPlainObject = __webpack_require__(246);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -28787,7 +28879,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 262 */
+/* 263 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28818,7 +28910,7 @@
 	}
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28826,7 +28918,7 @@
 	exports.__esModule = true;
 	exports["default"] = wrapActionCreators;
 
-	var _redux = __webpack_require__(243);
+	var _redux = __webpack_require__(244);
 
 	function wrapActionCreators(actionCreators) {
 	  return function (dispatch) {
@@ -28835,7 +28927,7 @@
 	}
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*eslint-disable no-unused-vars*/
@@ -38915,16 +39007,16 @@
 
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var SaveFavorites = __webpack_require__(266);
+	var SaveFavorites = __webpack_require__(267);
 	var Header = __webpack_require__(178);
 
-	var _require = __webpack_require__(242);
+	var _require = __webpack_require__(243);
 
 	var connector = _require.connector;
 
@@ -38947,8 +39039,6 @@
 	    return imageArray[0] || { title: 'hi', link: 'stuff', description: 'k' };
 	  },
 	  render: function render() {
-	    console.log('hi');
-
 	    var _assignImage = this.assignImage(this.props.params.id);
 
 	    var title = _assignImage.title;
@@ -38961,7 +39051,7 @@
 	      React.createElement(Header, null),
 	      React.createElement(
 	        'div',
-	        { className: 'details' },
+	        { className: 'content' },
 	        React.createElement(
 	          'h2',
 	          null,
@@ -38982,7 +39072,7 @@
 	module.exports = connector(Details);
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38995,17 +39085,18 @@
 	    console.log(this.props.imageID);
 	    var save = confirm("Are you sure you want to add this image to favorites?");
 	    //set to localStorage to be accessed via Favorites page;
-	    if (save) {
-	      localStorage.setItem(this.props.imageID, this.props.imageID);
-	    }
+	    // if (save) {
+	    //   localStorage.setItem(this.props.imageID, this.props.imageID);
+	    // }
+	    // onClick = {this.saveToFavorites}
 
-	    console.log(localStorage);
+	    // console.log(localStorage)
 	  },
 	  render: function render() {
 	    console.log(localStorage);
 	    return React.createElement(
 	      "button",
-	      { type: "button", onClick: this.saveToFavorites },
+	      { type: "button" },
 	      "Save to Favorites"
 	    );
 	  }
@@ -39014,7 +39105,7 @@
 	module.exports = SaveFavorites;
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39025,7 +39116,7 @@
 	var ImageThumb = __webpack_require__(177);
 	var Header = __webpack_require__(178);
 
-	var _require = __webpack_require__(242);
+	var _require = __webpack_require__(243);
 
 	var connector = _require.connector;
 
@@ -39042,7 +39133,6 @@
 	    this.props.setImages();
 	  },
 	  render: function render() {
-	    console.log(this.props);
 	    return React.createElement(
 	      'div',
 	      { className: 'container' },

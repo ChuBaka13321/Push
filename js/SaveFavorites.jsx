@@ -5,16 +5,17 @@ const SaveFavorites = React.createClass({
     console.log(this.props.imageID)
     var save = confirm("Are you sure you want to add this image to favorites?");
     //set to localStorage to be accessed via Favorites page;
-    if (save) {
-      localStorage.setItem(this.props.imageID, this.props.imageID);
-    }
+    // if (save) {
+    //   localStorage.setItem(this.props.imageID, this.props.imageID);
+    // }
+    // onClick = {this.saveToFavorites}
     
-    console.log(localStorage)
+    // console.log(localStorage)
   },
   render() {
     console.log(localStorage)
     return(
-      <button type="button" onClick = {this.saveToFavorites}>Save to Favorites</button>
+      <button type="button" >Save to Favorites</button>
     )
   }
 })

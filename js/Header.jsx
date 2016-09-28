@@ -1,9 +1,10 @@
 const React = require('react');
 const { Link } = require('react-router');
+const ModalTest = require('./ModalTest')
 
 const Header = React.createClass({
   render(){
-    return(
+    return (
       <header className="header">
         <div className="header-item">
           <Link to={`/`} className="headerLink">
@@ -11,8 +12,11 @@ const Header = React.createClass({
           </Link>
         </div>
         <div className="header-item">
+          <ModalTest/>
+        </div>
+        <div className="header-item">
           <Link to={`/favorites`} className="headerLink">
-            <h2>Favorites Page</h2>
+            <h2>Favorites</h2>
           </Link>
         </div>
       </header>

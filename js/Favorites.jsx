@@ -13,7 +13,6 @@ const Favorites = React.createClass({
     this.props.setImages()
   },
   render(){
-    console.log(this.props)
     return (
       <div className="container">
         <Header/>

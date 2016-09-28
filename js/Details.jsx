@@ -17,12 +17,11 @@ const Details = React.createClass({
     return imageArray[0] || {title:'hi', link: 'stuff', description: 'k'};
   },
   render() {
-    console.log('hi');
     const { title, link, description } = this.assignImage(this.props.params.id);
     return (
       <div className="container">
         <Header />
-        <div className="details">
+        <div className="content">
           <h2>{title}</h2>
           <img alt="" src={link} className="detailsImage" />
           <p>{description}</p>

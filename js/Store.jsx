@@ -33,7 +33,9 @@ const getImages = (dispatch) => {
 }
 
 const setImagesState = (state, data) => {
+    // creating newState as to not 'mutate' current state
     const newState = {};
+    // adding the imgur data under images key
     Object.assign(newState, state, {images: data})
     return newState;
   }
@@ -54,7 +56,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({type: GET_IMAGES, dispatch: dispatch})
     }
   }
-  
 }
 
 const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps)
