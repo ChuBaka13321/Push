@@ -1,6 +1,26 @@
 const React = require('react');
+const SignUp = require('./SignUp')
+const SignIn = require('./SignIn')
 
 const ModalTest = React.createClass({
+///////testing two components
+  getInitialState: function () {
+    return {
+        active: 'SIGNUP'
+    };
+  },
+
+  toggleSignUp: function () {
+    this.setState({
+        active: "SIGNUP"
+    });
+  },
+
+  toggleSignIn: function () {
+    this.setState({
+        active: "SIGNIN"
+    });
+  },
 
   openModal: function() {
     this.refs.testingRef.style.display = "block";
@@ -15,7 +35,6 @@ const ModalTest = React.createClass({
     if (event.target === this.refs.testingRef) {
         this.refs.testingRef.style.display = "none";
     }
-    console.log(event.target === this.refs.testingRef)
   },
 
   componentDidMount: function() {
@@ -27,22 +46,28 @@ const ModalTest = React.createClass({
   },
 
   render() {
+    const active = this.state.active;
+    let modal;
+    if(active === 'SIGNUP') {
+      modal = <SignUp />;
+    } else if(active === 'SIGNIN') {
+      modal = <SignIn />;
+    };
     return (
       <div>
-        <button id="myBtn" onClick={this.openModal}>SignUp</button>
+        <button id="myBtn" onClick={this.openModal}>Sign Up/Sign In</button>
 
         <div id="myModal" className="modal" ref="testingRef">
-
+        
           <div className="modal-content">
             <span className="close" onClick={this.closeModal}>x</span>
-            <form id="myform" method="post">
-              <label>Username</label>
-              <input type="text" name="nameForm" id="usernameForm" required/>
-
-              <label>Password</label>
-              <input type="text" name="passForm" id="passwordForm" required/>
-              <button type="submit" id="mysubmit">Submit</button>
-            </form>
+            <button type="button" onClick={this.toggleSignUp}>
+              Sign Up
+            </button>
+            <button type="button" onClick={this.toggleSignIn}>
+              Sign In
+            </button>
+            {modal}
           </div>
 
         </div>

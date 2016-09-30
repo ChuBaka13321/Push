@@ -27310,13 +27310,33 @@
 /* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(1);
+	var SignUp = __webpack_require__(269);
+	var SignIn = __webpack_require__(270);
 
 	var ModalTest = React.createClass({
-	  displayName: "ModalTest",
+	  displayName: 'ModalTest',
 
+	  ///////testing two components
+	  getInitialState: function getInitialState() {
+	    return {
+	      active: 'SIGNUP'
+	    };
+	  },
+
+	  toggleSignUp: function toggleSignUp() {
+	    this.setState({
+	      active: "SIGNUP"
+	    });
+	  },
+
+	  toggleSignIn: function toggleSignIn() {
+	    this.setState({
+	      active: "SIGNIN"
+	    });
+	  },
 
 	  openModal: function openModal() {
 	    this.refs.testingRef.style.display = "block";
@@ -27331,7 +27351,6 @@
 	    if (event.target === this.refs.testingRef) {
 	      this.refs.testingRef.style.display = "none";
 	    }
-	    console.log(event.target === this.refs.testingRef);
 	  },
 
 	  componentDidMount: function componentDidMount() {
@@ -27343,46 +27362,43 @@
 	  },
 
 	  render: function render() {
+	    var active = this.state.active;
+	    var modal = void 0;
+	    if (active === 'SIGNUP') {
+	      modal = React.createElement(SignUp, null);
+	    } else if (active === 'SIGNIN') {
+	      modal = React.createElement(SignIn, null);
+	    };
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      React.createElement(
-	        "button",
-	        { id: "myBtn", onClick: this.openModal },
-	        "SignUp"
+	        'button',
+	        { id: 'myBtn', onClick: this.openModal },
+	        'Sign Up/Sign In'
 	      ),
 	      React.createElement(
-	        "div",
-	        { id: "myModal", className: "modal", ref: "testingRef" },
+	        'div',
+	        { id: 'myModal', className: 'modal', ref: 'testingRef' },
 	        React.createElement(
-	          "div",
-	          { className: "modal-content" },
+	          'div',
+	          { className: 'modal-content' },
 	          React.createElement(
-	            "span",
-	            { className: "close", onClick: this.closeModal },
-	            "x"
+	            'span',
+	            { className: 'close', onClick: this.closeModal },
+	            'x'
 	          ),
 	          React.createElement(
-	            "form",
-	            { id: "myform", method: "post" },
-	            React.createElement(
-	              "label",
-	              null,
-	              "Username"
-	            ),
-	            React.createElement("input", { type: "text", name: "nameForm", id: "usernameForm", required: true }),
-	            React.createElement(
-	              "label",
-	              null,
-	              "Password"
-	            ),
-	            React.createElement("input", { type: "text", name: "passForm", id: "passwordForm", required: true }),
-	            React.createElement(
-	              "button",
-	              { type: "submit", id: "mysubmit" },
-	              "Submit"
-	            )
-	          )
+	            'button',
+	            { type: 'button', onClick: this.toggleSignUp },
+	            'Sign Up'
+	          ),
+	          React.createElement(
+	            'button',
+	            { type: 'button', onClick: this.toggleSignIn },
+	            'Sign In'
+	          ),
+	          modal
 	        )
 	      )
 	    );
@@ -39162,6 +39178,106 @@
 	});
 
 	module.exports = connector(Favorites);
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var Header = __webpack_require__(178);
+
+	var SignUp = React.createClass({
+	  displayName: 'SignUp',
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Sign Up'
+	      ),
+	      React.createElement(
+	        'form',
+	        { id: 'myform', action: '/', method: 'post' },
+	        React.createElement(
+	          'label',
+	          null,
+	          'Email'
+	        ),
+	        React.createElement('input', { type: 'text', name: 'emailForm', id: 'emailFormId', required: true }),
+	        React.createElement(
+	          'label',
+	          null,
+	          'Password'
+	        ),
+	        React.createElement('input', { type: 'text', name: 'passForm', id: 'passwordForm', required: true }),
+	        React.createElement(
+	          'label',
+	          null,
+	          'Confirm Password'
+	        ),
+	        React.createElement('input', { type: 'text', name: 'confirmPassForm', id: 'confirmPasswordForm', required: true }),
+	        React.createElement(
+	          'button',
+	          { type: 'submit', id: 'mysubmit' },
+	          'Sign Up'
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = SignUp;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var Header = __webpack_require__(178);
+
+	var SignIn = React.createClass({
+	  displayName: 'SignIn',
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Sign In'
+	      ),
+	      React.createElement(
+	        'form',
+	        { id: 'myform', action: '/', method: 'post' },
+	        React.createElement(
+	          'label',
+	          null,
+	          'Email'
+	        ),
+	        React.createElement('input', { type: 'text', name: 'emailForm', id: 'emailFormId', required: true }),
+	        React.createElement(
+	          'label',
+	          null,
+	          'Password'
+	        ),
+	        React.createElement('input', { type: 'text', name: 'passForm', id: 'passwordForm', required: true }),
+	        React.createElement(
+	          'button',
+	          { type: 'submit', id: 'mysubmit' },
+	          'Sign In'
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = SignIn;
 
 /***/ }
 /******/ ]);

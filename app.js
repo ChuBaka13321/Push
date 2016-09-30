@@ -38,14 +38,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use((req, res) => {
-  console.log(req.body)
   match({ routes: Routes(), location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
       res.status(500).send(error.message)
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search)
     } else if (renderProps) {
-      //send body if everything works out
+      console.log(req.body)
+      if(req.body.emailForm && req.body.passForm) {
+        const name = req.body.emailForm
+        const pass = req.body.passForm
+        firebase.auth().createUserWithEmailAndPassword(name, pass).catch(function(error) {
+          // Handle Errors here.
+          // var errorCode = error.code;
+          // var errorMessage = error.message;
+          console.log(error)
+          // ...
+        });
+      }
       const body = ReactDOMServer.renderToString(
         React.createElement(Provider, {store},
           React.createElement(RouterContext, renderProps)
@@ -57,6 +67,15 @@ app.use((req, res) => {
     }
   })
 })
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log(user.email, 'LOGGED IN')
+  } else {
+    // No user is signed in.
+    console.log('no user')
+  }
+});
 
 
 

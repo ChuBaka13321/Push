@@ -1,6 +1,6 @@
-const React = require('react')
+const React = require('react');
 const Header = require('./Header');
-const { Link } = require('react-router')
+const { Link } = require('react-router');
 
 const ImageThumb = React.createClass({
   render(){
