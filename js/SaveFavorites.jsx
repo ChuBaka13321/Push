@@ -13,7 +13,6 @@ const SaveFavorites = React.createClass({
     // console.log(localStorage)
   },
   render() {
-    console.log(localStorage)
     return(
       <button type="button" >Save to Favorites</button>
     )

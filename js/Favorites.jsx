@@ -10,7 +10,7 @@ const Favorites = React.createClass({
     };
   },
   componentDidMount: function(){
-    this.props.setImages()
+    // this.props.setImages()
   },
   render(){
     return (

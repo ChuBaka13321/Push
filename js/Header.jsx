@@ -1,8 +1,14 @@
 const React = require('react');
 const { Link } = require('react-router');
 const ModalTest = require('./ModalTest')
+const { connector } = require('./Store');
 
 const Header = React.createClass({
+  testProps: function() {
+    console.log('yo')
+    this.props.isLoggedIn();
+  },
+
   render(){
     return (
       <header className="header">
@@ -10,6 +16,9 @@ const Header = React.createClass({
           <Link to={`/`} className="headerLink">
             <h2>Push</h2>
           </Link>
+        </div>
+        <div>
+          <button onClick={this.testProps}>hey</button>
         </div>
         <div className="header-item">
           <ModalTest/>
@@ -24,4 +33,4 @@ const Header = React.createClass({
   }
 });
 
-module.exports = Header;
+module.exports = connector(Header);

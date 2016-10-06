@@ -90,6 +90,9 @@ input {
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
 }
+input {
+  background-color: rgba(220, 220, 220, .8)
+}
 
 /* The Close Button */
 .close {

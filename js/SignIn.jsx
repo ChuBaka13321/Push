@@ -8,10 +8,10 @@ const SignIn = React.createClass({
         <h1>Sign In</h1>
         <form id="myform" action='/' method="post">
           <label>Email</label>
-          <input type="text" name="emailForm" id="emailFormId" required/>
+          <input type="text" name="signInEmail" id="emailFormId" required/>
 
           <label>Password</label>
-          <input type="text" name="passForm" id="passwordForm" required/>
+          <input type="text" name="signInPass" id="passwordForm" required/>
           <button type="submit" id="mysubmit">Sign In</button>
         </form>
       </div>
