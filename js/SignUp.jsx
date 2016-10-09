@@ -2,7 +2,7 @@ const React = require('react');
 const Header = require('./Header');
 const { connector } = require('./Store');
 const ReactRedux = require('react-redux');
-const UserActions = require('./UserActions')
+const UserActions = require('./UserActions');
 
 const SignUp = React.createClass({
   onChange: function() {

@@ -21626,11 +21626,16 @@
 	var connector = _require2.connector;
 
 	var ReactRedux = __webpack_require__(258);
+	var UserActions = __webpack_require__(303);
 
 	var Header = React.createClass({
 	  displayName: 'Header',
+
+	  componentDidMount: function componentDidMount() {
+	    this.props.checkUser();
+	  },
+
 	  render: function render() {
-	    console.log(this.props, 'header props');
 	    var test = void 0;
 	    if (this.props.uid) {
 	      test = React.createElement(
@@ -21694,7 +21699,15 @@
 	  };
 	};
 
-	module.exports = ReactRedux.connect(mapStateToProps)(Header);
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    checkUser: function checkUser() {
+	      dispatch(UserActions.checkUser());
+	    }
+	  };
+	};
+
+	module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Header);
 
 /***/ },
 /* 179 */
@@ -27508,7 +27521,6 @@
 	var signInUser = function signInUser(state, uid) {
 	  var newState = {};
 	  Object.assign(newState, state, { uid: uid });
-	  console.log(newState, 'newState after user signed in');
 	  return newState;
 	};
 	// called anytime store state is updated, maps to components' props
@@ -31418,6 +31430,20 @@
 	        var errorCode = error.code;
 	        var errorMessage = error.message;
 	        // ...
+	      });
+	    };
+	  },
+
+	  checkUser: function checkUser() {
+	    return function (dispatch, getState) {
+	      firebase.auth().onAuthStateChanged(function (user) {
+	        if (user) {
+	          // User is signed in.
+	          dispatch({ type: C.SIGN_IN, uid: user.uid });
+	        } else {
+	          // No user is signed in.
+	          console.log('noone is signed in');
+	        }
 	      });
 	    };
 	  }

@@ -1,12 +1,16 @@
 const React = require('react');
 const { Link } = require('react-router');
-const ModalTest = require('./ModalTest')
+const ModalTest = require('./ModalTest');
 const { connector } = require('./Store');
-const ReactRedux = require('react-redux')
+const ReactRedux = require('react-redux');
+const UserActions = require('./UserActions');
 
 const Header = React.createClass({
+  componentDidMount: function() {
+    this.props.checkUser();
+  },
+
   render(){
-    console.log(this.props, 'header props')
     let test;
     if(this.props.uid) {
       test = (<h3>{this.props.uid}</h3>)
@@ -42,4 +46,12 @@ const mapStateToProps = (state) => {
   }
 }
 
-module.exports = ReactRedux.connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    checkUser: () => {
+      dispatch(UserActions.checkUser())
+    }
+  }
+}
+
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Header);

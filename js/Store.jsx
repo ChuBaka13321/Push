@@ -44,7 +44,6 @@ const setImagesState = (state, data) => {
 const signInUser = (state, uid) => {
   const newState = {};
   Object.assign(newState, state, {uid: uid})
-  console.log(newState, 'newState after user signed in')
   return newState;
 }
 // called anytime store state is updated, maps to components' props

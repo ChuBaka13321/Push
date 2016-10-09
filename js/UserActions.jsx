@@ -10,7 +10,6 @@ const config = {
 };
 firebase.initializeApp(config);
 
-
 module.exports = {
   signUp: function(email, pass) {
     return function(dispatch, getState) {
@@ -37,6 +36,20 @@ module.exports = {
         var errorCode = error.code;
         var errorMessage = error.message;
         // ...
+      });
+    }
+  },
+
+  checkUser: function() {
+    return function(dispatch, getState) {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          // User is signed in.
+          dispatch({type: C.SIGN_IN, uid: user.uid})
+        } else {
+          // No user is signed in.
+          console.log('noone is signed in')
+        }
       });
     }
   }
