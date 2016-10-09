@@ -1,7 +1,10 @@
 const React = require('react');
 const ImageThumb = require('./ImageThumb');
 const Header = require('./Header');
-const { connector } = require('./Store');
+// const { connector } = require('./Store');
+const C = require('./Constants');
+const ReactRedux = require('react-redux')
+const ImageActions = require('./ImageActions')
 
 const Landing = React.createClass({
   getDefaultProps: function() {
@@ -30,4 +33,19 @@ const Landing = React.createClass({
   }
 });
 
-module.exports = connector(Landing);
+const mapStateToProps = (state) => { 
+  return { 
+    images: state.images,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setImages: () => {
+      dispatch(ImageActions.getImages())
+    }
+  }
+}
+
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Landing);
+// module.exports = connector(Landing);

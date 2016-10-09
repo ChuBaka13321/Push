@@ -3,22 +3,18 @@ const axios = require('axios');
 const clientId = '3fe8ad5fb43ef74';
 
 module.exports = {
-  setImages: (dispatch) => (
-    {type: C.GET_IMAGES, dispatch: dispatch}
-  ),
-  getImages: (dispatch, imgStateLength) => {
-    if(imgStateLength > 0) {
-      return;
+  getImages: function() {
+    return function(dispatch, getState) {
+      axios({
+        url: 'https://api.imgur.com/3/gallery/r/GetMotivated/time/all/0',
+        headers: {
+          'Authorization': `Client-ID ${clientId}`
+        },
+        type: 'GET'
+      })
+      .then(function (response) {
+        dispatch({type: C.SET_IMAGES, data: response.data.data});
+      })
     }
-    axios({
-      url: 'https://api.imgur.com/3/gallery/r/GetMotivated/time/all/0',
-      headers: {
-        'Authorization': `Client-ID ${clientId}`
-      },
-      type: 'GET'
-    })
-    .then(function (response) {
-      dispatch({type: C.SET_IMAGES, data: response.data.data});
-    })
   }
 }

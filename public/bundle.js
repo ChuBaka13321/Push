@@ -21505,11 +21505,10 @@
 	var React = __webpack_require__(1);
 	var ImageThumb = __webpack_require__(177);
 	var Header = __webpack_require__(178);
-
-	var _require = __webpack_require__(243);
-
-	var connector = _require.connector;
-
+	// const { connector } = require('./Store');
+	var C = __webpack_require__(300);
+	var ReactRedux = __webpack_require__(258);
+	var ImageActions = __webpack_require__(299);
 
 	var Landing = React.createClass({
 	  displayName: 'Landing',
@@ -21548,7 +21547,22 @@
 	  }
 	});
 
-	module.exports = connector(Landing);
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    images: state.images
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    setImages: function setImages() {
+	      dispatch(ImageActions.getImages());
+	    }
+	  };
+	};
+
+	module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Landing);
+	// module.exports = connector(Landing);
 
 /***/ },
 /* 177 */
@@ -21611,16 +21625,26 @@
 
 	var connector = _require2.connector;
 
+	var ReactRedux = __webpack_require__(258);
 
 	var Header = React.createClass({
 	  displayName: 'Header',
-
-	  testProps: function testProps() {
-	    console.log('yo');
-	    this.props.isLoggedIn();
-	  },
-
 	  render: function render() {
+	    console.log(this.props, 'header props');
+	    var test = void 0;
+	    if (this.props.uid) {
+	      test = React.createElement(
+	        'h3',
+	        null,
+	        this.props.uid
+	      );
+	    } else {
+	      test = React.createElement(
+	        'h3',
+	        null,
+	        'Sup yo'
+	      );
+	    }
 	    return React.createElement(
 	      'header',
 	      { className: 'header' },
@@ -21640,11 +21664,7 @@
 	      React.createElement(
 	        'div',
 	        null,
-	        React.createElement(
-	          'button',
-	          { onClick: this.testProps },
-	          'hey'
-	        )
+	        test
 	      ),
 	      React.createElement(
 	        'div',
@@ -21668,7 +21688,13 @@
 	  }
 	});
 
-	module.exports = connector(Header);
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    uid: state.uid
+	  };
+	};
+
+	module.exports = ReactRedux.connect(mapStateToProps)(Header);
 
 /***/ },
 /* 179 */
@@ -27378,6 +27404,7 @@
 	  },
 
 	  componentWillUnmount: function componentWillUnmount() {
+	    console.log('modaltest unmounted');
 	    window.removeEventListener('click', this.clickOutside);
 	  },
 
@@ -27438,27 +27465,15 @@
 
 	var _require = __webpack_require__(299);
 
-	var _setImages = _require.setImages;
+	var setImages = _require.setImages;
 	var getImages = _require.getImages;
 
 	var C = __webpack_require__(300);
-	//firebase stuff
-	var firebase = __webpack_require__(272);
-	var config = {
-	  apiKey: "AIzaSyCb-MSv8bEfuZu7EWsY_eA3ben5zFooRCg",
-	  authDomain: "push-f3c35.firebaseapp.com",
-	  databaseURL: "https://push-f3c35.firebaseio.com",
-	  storageBucket: "",
-	  messagingSenderId: "397338317643"
-	};
-	firebase.initializeApp(config);
-
-	// const GET_IMAGES = 'getImages'
-	// const SET_IMAGES = 'setImages'
-	var IS_LOGGED_IN = 'isLoggedIn';
+	var thunk = __webpack_require__(301).default;
 
 	var initialState = {
-	  images: []
+	  images: [],
+	  uid: ''
 	};
 
 	var rootReducer = function rootReducer() {
@@ -27466,46 +27481,22 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case C.GET_IMAGES:
-	      getImages(action.dispatch, store.getState().length);
 	    case C.SET_IMAGES:
 	      return setImagesState(state, action.data);
-	    case IS_LOGGED_IN:
-	      return setUserState(state);
+	    case C.SIGN_IN:
+	      return signInUser(state, action.uid);
 	    default:
 	      return state;
 	  }
 	};
 
-	var store = redux.createStore(rootReducer, initialState
+	var store = redux.createStore(rootReducer, initialState, redux.applyMiddleware(thunk)
 	// ,redux.compose(
 	//   typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : (f) => f
 	// )
 	);
 
-	var setUserState = function setUserState(state) {
-	  var blah = {};
-	  var user = firebase.auth().currentUser;
-
-	  if (user) {
-	    // User is signed in.
-	    console.log(user.email, ' is signed in');
-	  } else {
-	    console.log('no user was signed in, signing zzzzzz in');
-	    var email = 'zzzzzz@zzzzzz.com';
-	    var pass = 'zzzzzz';
-	    firebase.auth().signInWithEmailAndPassword(email, pass).catch(function (error) {
-	      // Handle Errors here.
-	      var errorCode = error.code;
-	      var errorMessage = error.message;
-	      // ...
-	    });
-	  }
-
-	  Object.assign(blah, state, { testing: 'testing' });
-	  return blah;
-	};
-
+	// set the images to the state
 	var setImagesState = function setImagesState(state, data) {
 	  // creating newState as to not 'mutate' current state
 	  var newState = {};
@@ -27514,32 +27505,34 @@
 	  return newState;
 	};
 
-	// called anytime store state is updated
+	var signInUser = function signInUser(state, uid) {
+	  var newState = {};
+	  Object.assign(newState, state, { uid: uid });
+	  console.log(newState, 'newState after user signed in');
+	  return newState;
+	};
+	// called anytime store state is updated, maps to components' props
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    images: state.images,
-	    testing: state.testing
+	    uid: state.uid
 	  };
 	};
 
 	//dispatch actions
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
-	    // setImages:() =>{
-	    //   dispatch({type: GET_IMAGES, dispatch: dispatch})
-	    // },
-	    setImages: function setImages() {
-	      dispatch(_setImages(dispatch));
-	    },
 	    isLoggedIn: function isLoggedIn() {
-	      dispatch({ type: IS_LOGGED_IN });
+	      dispatch({ type: C.IS_LOGGED_IN });
 	    }
 	  };
 	};
 
 	// reactRedux connects React component to a Redux store, exports as "connector" constant
-	var connector = reactRedux.connect(mapStateToProps, mapDispatchToProps);
-	module.exports = { connector: connector, store: store, rootReducer: rootReducer };
+	// const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps)
+	// const connector;
+	module.exports = { store: store, rootReducer: rootReducer };
+	// module.exports = { connector, store, rootReducer }
 
 /***/ },
 /* 244 */
@@ -29017,6 +29010,7 @@
 
 	var connector = _require.connector;
 
+	var ReactRedux = __webpack_require__(258);
 
 	var Details = React.createClass({
 	  displayName: 'Details',
@@ -29066,7 +29060,9 @@
 	  }
 	});
 
-	module.exports = connector(Details);
+	module.exports = Details;
+	// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Details);
+	// module.exports = connector(Details)
 
 /***/ },
 /* 267 */
@@ -29116,6 +29112,7 @@
 
 	var connector = _require.connector;
 
+	var ReactRedux = __webpack_require__(258);
 
 	var Favorites = React.createClass({
 	  displayName: 'Favorites',
@@ -29157,7 +29154,9 @@
 	  }
 	});
 
-	module.exports = connector(Favorites);
+	// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Favorites);
+	module.exports = Favorites;
+	// module.exports = connector(Favorites);
 
 /***/ },
 /* 269 */
@@ -29172,6 +29171,8 @@
 
 	var connector = _require.connector;
 
+	var ReactRedux = __webpack_require__(258);
+	var UserActions = __webpack_require__(303);
 
 	var SignUp = React.createClass({
 	  displayName: 'SignUp',
@@ -29199,9 +29200,16 @@
 	    }
 	  },
 
+	  closeModal: function closeModal() {
+	    document.getElementById("myModal").style.display = "none";
+	  },
+
 	  signUp: function signUp(event) {
-	    console.log(this.props);
 	    event.preventDefault();
+	    var email = this.refs.email.value;
+	    var pass = this.refs.passForm.value;
+	    this.props.signUpUser(email, pass);
+	    this.closeModal();
 	  },
 
 	  render: function render() {
@@ -29221,7 +29229,7 @@
 	          null,
 	          'Email'
 	        ),
-	        React.createElement('input', { type: 'text', name: 'signUpEmail', id: 'emailFormId', required: true }),
+	        React.createElement('input', { type: 'text', name: 'signUpEmail', ref: 'email', id: 'emailFormId', required: true }),
 	        React.createElement(
 	          'label',
 	          null,
@@ -29244,7 +29252,25 @@
 	  }
 	});
 
-	module.exports = connector(SignUp);
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    images: state.uid
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    signUpUser: function signUpUser(email, pass) {
+	      dispatch(UserActions.signUp(email, pass));
+	    }
+	  };
+	};
+
+	module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUp);
+
+	// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUp);
+	// module.exports = SignUp;
+	// module.exports = connector(SignUp);
 
 /***/ },
 /* 270 */
@@ -31288,22 +31314,18 @@
 	var clientId = '3fe8ad5fb43ef74';
 
 	module.exports = {
-	  setImages: function setImages(dispatch) {
-	    return { type: C.GET_IMAGES, dispatch: dispatch };
-	  },
-	  getImages: function getImages(dispatch, imgStateLength) {
-	    if (imgStateLength > 0) {
-	      return;
-	    }
-	    axios({
-	      url: 'https://api.imgur.com/3/gallery/r/GetMotivated/time/all/0',
-	      headers: {
-	        'Authorization': 'Client-ID ' + clientId
-	      },
-	      type: 'GET'
-	    }).then(function (response) {
-	      dispatch({ type: C.SET_IMAGES, data: response.data.data });
-	    });
+	  getImages: function getImages() {
+	    return function (dispatch, getState) {
+	      axios({
+	        url: 'https://api.imgur.com/3/gallery/r/GetMotivated/time/all/0',
+	        headers: {
+	          'Authorization': 'Client-ID ' + clientId
+	        },
+	        type: 'GET'
+	      }).then(function (response) {
+	        dispatch({ type: C.SET_IMAGES, data: response.data.data });
+	      });
+	    };
 	  }
 	};
 
@@ -31314,8 +31336,91 @@
 	'use strict';
 
 	module.exports = {
+	  // images
 	  GET_IMAGES: 'getImages',
-	  SET_IMAGES: 'setImages'
+	  SET_IMAGES: 'setImages',
+
+	  // users
+	  SIGN_UP: 'signUp',
+	  SIGN_IN: 'signIn',
+
+	  CLOSE_MODAL: 'closeModal'
+	};
+
+/***/ },
+/* 301 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch;
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
+
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
+
+/***/ },
+/* 302 */,
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var C = __webpack_require__(300);
+	//firebase stuff
+	var firebase = __webpack_require__(272);
+	var config = {
+	  apiKey: "AIzaSyCb-MSv8bEfuZu7EWsY_eA3ben5zFooRCg",
+	  authDomain: "push-f3c35.firebaseapp.com",
+	  databaseURL: "https://push-f3c35.firebaseio.com",
+	  storageBucket: "",
+	  messagingSenderId: "397338317643"
+	};
+	firebase.initializeApp(config);
+
+	module.exports = {
+	  signUp: function signUp(email, pass) {
+	    return function (dispatch, getState) {
+	      firebase.auth().signOut().then(function () {
+	        // Sign-out successful.
+	        console.log('signed user out');
+	      }, function (error) {
+	        // An error happened.
+	      });
+	      firebase.auth().createUserWithEmailAndPassword(email, pass).then(function (user) {
+	        firebase.auth().onAuthStateChanged(function (user) {
+	          if (user) {
+	            console.log(user.uid, ' is signed in');
+	            dispatch({ type: C.SIGN_IN, uid: user.uid });
+	          } else {
+	            // No user is signed in.
+	            console.log('user did not signin');
+	          }
+	        });
+	      }).catch(function (error) {
+	        // Handle Errors here.
+	        var errorCode = error.code;
+	        var errorMessage = error.message;
+	        // ...
+	      });
+	    };
+	  }
 	};
 
 /***/ }

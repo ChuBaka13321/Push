@@ -2,71 +2,36 @@ const redux = require('redux');
 const reactRedux = require('react-redux');
 const { setImages, getImages } = require('./ImageActions');
 const C = require('./Constants');
-//firebase stuff
-const firebase = require("firebase");
-const config = {
-  apiKey: "AIzaSyCb-MSv8bEfuZu7EWsY_eA3ben5zFooRCg",
-  authDomain: "push-f3c35.firebaseapp.com",
-  databaseURL: "https://push-f3c35.firebaseio.com",
-  storageBucket: "",
-  messagingSenderId: "397338317643"
-};
-firebase.initializeApp(config);
-
-// const GET_IMAGES = 'getImages'
-// const SET_IMAGES = 'setImages'
-const IS_LOGGED_IN = 'isLoggedIn'
+const thunk = require('redux-thunk').default
 
 
 const initialState = {
-  images: []
+  images: [],
+  uid: ''
 }
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case C.GET_IMAGES:
-      getImages(action.dispatch, store.getState().length)
     case C.SET_IMAGES:
       return setImagesState(state, action.data)
-    case IS_LOGGED_IN:
-      return setUserState(state)
+    case C.SIGN_IN:
+      return signInUser(state, action.uid)
     default:
       return state
   }
 }
 
+
 const store = redux.createStore(
   rootReducer, 
-  initialState
+  initialState,
+  redux.applyMiddleware(thunk)
   // ,redux.compose(
   //   typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : (f) => f
   // )
 )
 
-const setUserState = (state) => {
-  const blah = {};
-  var user = firebase.auth().currentUser;
-
-  if (user) {
-    // User is signed in.
-    console.log(user.email, ' is signed in')
-  } else {
-    console.log('no user was signed in, signing zzzzzz in')
-    const email = 'zzzzzz@zzzzzz.com'
-    const pass = 'zzzzzz'
-    firebase.auth().signInWithEmailAndPassword(email, pass).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-    });
-  }
-
-  
-  Object.assign(blah, state, {testing: 'testing'})
-  return blah;
-}
-
+// set the images to the state
 const setImagesState = (state, data) => {
   // creating newState as to not 'mutate' current state
   const newState = {};
@@ -75,31 +40,34 @@ const setImagesState = (state, data) => {
   return newState;
 }
 
-// called anytime store state is updated
+
+const signInUser = (state, uid) => {
+  const newState = {};
+  Object.assign(newState, state, {uid: uid})
+  console.log(newState, 'newState after user signed in')
+  return newState;
+}
+// called anytime store state is updated, maps to components' props
 const mapStateToProps = (state) => { 
   return { 
     images: state.images,
-    testing: state.testing
+    uid: state.uid
   }
 }
 
 //dispatch actions
 const mapDispatchToProps = (dispatch) => {
   return {
-    // setImages:() =>{
-    //   dispatch({type: GET_IMAGES, dispatch: dispatch})
-    // },
-    setImages: () => {
-      dispatch(setImages(dispatch));
-    },
     isLoggedIn: () => {
-      dispatch({type: IS_LOGGED_IN});
+      dispatch({type: C.IS_LOGGED_IN});
     }
   }
 }
 
 // reactRedux connects React component to a Redux store, exports as "connector" constant
-const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps)
-module.exports = { connector, store, rootReducer }
+// const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps)
+// const connector;
+module.exports = { store, rootReducer }
+// module.exports = { connector, store, rootReducer }
 
 

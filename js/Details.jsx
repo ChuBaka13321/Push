@@ -2,6 +2,7 @@ const React = require('react');
 const SaveFavorites = require('./SaveFavorites');
 const Header = require('./Header');
 const { connector } = require('./Store');
+const ReactRedux = require('react-redux')
 
 const Details = React.createClass({
   getDefaultProps: function() {
@@ -32,4 +33,6 @@ const Details = React.createClass({
   }
 })
 
-module.exports = connector(Details)
+module.exports = Details;
+// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Details);
+// module.exports = connector(Details)

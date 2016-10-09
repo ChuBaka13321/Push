@@ -2,6 +2,7 @@ const React = require('react')
 const ImageThumb = require('./ImageThumb')
 const Header = require('./Header');
 const { connector } = require('./Store');
+const ReactRedux = require('react-redux')
 
 const Favorites = React.createClass({
   getDefaultProps: function() {
@@ -35,4 +36,6 @@ const Favorites = React.createClass({
   }
 })
 
-module.exports = connector(Favorites);
+// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Favorites);
+module.exports = Favorites;
+// module.exports = connector(Favorites);

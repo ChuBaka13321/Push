@@ -2,14 +2,17 @@ const React = require('react');
 const { Link } = require('react-router');
 const ModalTest = require('./ModalTest')
 const { connector } = require('./Store');
+const ReactRedux = require('react-redux')
 
 const Header = React.createClass({
-  testProps: function() {
-    console.log('yo')
-    this.props.isLoggedIn();
-  },
-
   render(){
+    console.log(this.props, 'header props')
+    let test;
+    if(this.props.uid) {
+      test = (<h3>{this.props.uid}</h3>)
+    } else {
+      test = (<h3>Sup yo</h3>)
+    }
     return (
       <header className="header">
         <div className="header-item">
@@ -18,7 +21,7 @@ const Header = React.createClass({
           </Link>
         </div>
         <div>
-          <button onClick={this.testProps}>hey</button>
+          {test}
         </div>
         <div className="header-item">
           <ModalTest/>
@@ -33,4 +36,10 @@ const Header = React.createClass({
   }
 });
 
-module.exports = connector(Header);
+const mapStateToProps = (state) => { 
+  return { 
+    uid: state.uid,
+  }
+}
+
+module.exports = ReactRedux.connect(mapStateToProps)(Header);

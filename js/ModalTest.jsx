@@ -42,6 +42,7 @@ const ModalTest = React.createClass({
   },
 
   componentWillUnmount: function() {
+    console.log('modaltest unmounted')
     window.removeEventListener('click', this.clickOutside);
   },
 
