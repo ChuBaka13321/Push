@@ -2,6 +2,9 @@ const React = require('react');
 const SignUp = require('./SignUp')
 const SignIn = require('./SignIn')
 
+// saving this for reference currently
+// <button id="myBtn" onClick={this.openModal}>Sign Up/Sign In</button>
+
 const ModalTest = React.createClass({
 ///////testing two components
   getInitialState: function () {
@@ -56,8 +59,7 @@ const ModalTest = React.createClass({
     };
     return (
       <div>
-        <button id="myBtn" onClick={this.openModal}>Sign Up/Sign In</button>
-
+        <button className="signUpIn" onClick={this.openModal}>Sign Up</button><button className="signUpIn" onClick={this.openModal}>Sign In</button>
         <div id="myModal" className="modal" ref="testingRef">
         
           <div className="modal-content">
@@ -76,5 +78,22 @@ const ModalTest = React.createClass({
     )
   }
 });
+
+// work in progress, get modal to close via redux state change
+// const mapStateToProps = (state) => { 
+//   return { 
+//     images: state.uid,
+//   }
+// }
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     signUpUser: (email, pass) => {
+//       dispatch(UserActions.signUp(email, pass))
+//     }
+//   }
+// }
+
+// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ModalTest);
 
 module.exports = ModalTest;

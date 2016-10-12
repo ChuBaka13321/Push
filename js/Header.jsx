@@ -1,5 +1,5 @@
 const React = require('react');
-const { Link } = require('react-router');
+const { Link, browserHistory } = require('react-router');
 const ModalTest = require('./ModalTest');
 const { connector } = require('./Store');
 const ReactRedux = require('react-redux');
@@ -7,33 +7,47 @@ const UserActions = require('./UserActions');
 
 const Header = React.createClass({
   componentDidMount: function() {
+    console.log(this.props, 'header props')
     this.props.checkUser();
   },
 
+  signOut: function() {
+    this.props.signOut();
+    browserHistory.push('/')
+  },
+
   render(){
-    let test;
-    if(this.props.uid) {
-      test = (<h3>{this.props.uid}</h3>)
+    let signInOrOut;
+    if(this.props.email && this.props.uid) {
+      // signInOrOut = (<button type="button" onClick = {this.props.signOut} >Sign Out</button>)
+      signInOrOut = (
+        <div className="dropdown">
+          <button className="dropbtn">
+            {this.props.email}
+          </button>
+          <div className="dropdown-content">
+            <Link to={`/favorites`}>
+              Favorites
+            </Link>
+            <Link onClick = {this.signOut}>
+              Sign Out
+            </Link>
+          </div>
+        </div>
+      )
     } else {
-      test = (<h3>Sup yo</h3>)
+      signInOrOut = (<ModalTest />);
     }
+   
     return (
       <header className="header">
         <div className="header-item">
           <Link to={`/`} className="headerLink">
-            <h2>Push</h2>
+            Push
           </Link>
         </div>
-        <div>
-          {test}
-        </div>
         <div className="header-item">
-          <ModalTest/>
-        </div>
-        <div className="header-item">
-          <Link to={`/favorites`} className="headerLink">
-            <h2>Favorites</h2>
-          </Link>
+          {signInOrOut}
         </div>
       </header>
     )
@@ -42,7 +56,8 @@ const Header = React.createClass({
 
 const mapStateToProps = (state) => { 
   return { 
-    uid: state.uid,
+    email: state.email,
+    uid: state.uid
   }
 }
 
@@ -50,6 +65,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     checkUser: () => {
       dispatch(UserActions.checkUser())
+    },
+    signOut: () => {
+      dispatch(UserActions.signOut())
     }
   }
 }

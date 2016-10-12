@@ -6,6 +6,8 @@ module.exports = {
   // users
   SIGN_UP: 'signUp',
   SIGN_IN: 'signIn',
+  SIGN_OUT: 'signOut',
+  FAVORITES: 'favorites',
 
   CLOSE_MODAL: 'closeModal'
 }

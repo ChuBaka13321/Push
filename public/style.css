@@ -15,7 +15,7 @@ html, body {
 }
 
 .header + .content {
-  margin-top: 50px;
+  margin-top: 35px;
 }
 
 .header {
@@ -29,15 +29,22 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   /*testing out colors*/
   color: LightSkyBlue;
   background-color: black;
   /*padding: 10px;*/
 }
 
+.content {
+  /*need height of 80% otherwise signup/signin modal does not showup, still testing different %*/
+  min-height: 80%;
+}
+
 .header-item {
   padding: 15px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .headerLink {
@@ -45,10 +52,15 @@ html, body {
   color: inherit;
 }
 
+h4, h2{
+  margin: 10px;
+}
+
 .images {
   display: inline-block;
   margin: 10px;
   border-radius: 10px;
+  min-height: 100%;
 }
 
 .detailsImage {
@@ -70,41 +82,104 @@ input {
 
 /* MODAL TEST STYLES*/
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 100; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
 }
 input {
   background-color: rgba(220, 220, 220, .8)
 }
 
+.signUpIn:hover {
+  background-color: gray;
+}
+
 /* The Close Button */
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/*Dropdown menu stuff*/
+/* Dropdown Button */
+.dropbtn, .signUpIn {
+  text-decoration: none;
+  background-color: black;
+  /*background-color: #4CAF50;*/
+  /*color: white;*/
+  color: LightSkyBlue;
+  padding: 10px;
+  margin: 0 auto;
+  border: none;
+  cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 50px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: LightSkyBlue;
+  /*font-size: 20px;*/
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  border: 1px solid black;
+  background-color: lightgray;
+  margin: 0;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: white}
+/*.dropdown-content a:hover {background-color: #f1f1f1}*/
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+  z-index: 1;
+  left: auto;
+  right: 0;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: gray;
 }

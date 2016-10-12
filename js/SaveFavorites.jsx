@@ -1,22 +1,38 @@
 const React = require('react');
+const ReactRedux = require('react-redux');
+const UserActions = require('./UserActions');
 
 const SaveFavorites = React.createClass({
   saveToFavorites(){
-    console.log(this.props.imageID)
     var save = confirm("Are you sure you want to add this image to favorites?");
-    //set to localStorage to be accessed via Favorites page;
-    // if (save) {
-    //   localStorage.setItem(this.props.imageID, this.props.imageID);
-    // }
-    // onClick = {this.saveToFavorites}
-    
-    // console.log(localStorage)
+    // currently saving to firebase favorites
+    if(save) {
+      this.props.saveToFavorites(this.props.email, this.props.uid, this.props.image)
+    }
   },
   render() {
     return(
-      <button type="button" >Save to Favorites</button>
+      <button type="button" onClick = {this.saveToFavorites}>Save to Favorites</button>
     )
   }
 })
 
-module.exports = SaveFavorites;
+const mapStateToProps = (state) => { 
+  return { 
+    email: state.email,
+    uid: state.uid
+  }
+}
+
+//dispatch actions
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveToFavorites: (email, uid, image) => {
+      dispatch(UserActions.saveToFavorites(email, uid, image))
+      // dispatch({type: C.IS_LOGGED_IN});
+    }
+  }
+}
+
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SaveFavorites);
+// module.exports = SaveFavorites;

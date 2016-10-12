@@ -29,8 +29,7 @@ const SignUp = React.createClass({
   },
   
   closeModal: function() {
-    document.getElementById("myModal").style.display = "none";
-    
+    document.getElementById("myModal").style.display = "none";  
   },
 
   signUp: function(event) {
@@ -65,7 +64,7 @@ const SignUp = React.createClass({
 
 const mapStateToProps = (state) => { 
   return { 
-    images: state.uid,
+    uid: state.uid
   }
 }
 
@@ -77,6 +76,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
+// module.exports = ReactRedux.connect(mapDispatchToProps)(SignUp);
 module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUp);
 
 // module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUp);

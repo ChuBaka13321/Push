@@ -3,8 +3,8 @@ const ImageThumb = require('./ImageThumb');
 const Header = require('./Header');
 // const { connector } = require('./Store');
 const C = require('./Constants');
-const ReactRedux = require('react-redux')
-const ImageActions = require('./ImageActions')
+const ReactRedux = require('react-redux');
+const ImageActions = require('./ImageActions');
 
 const Landing = React.createClass({
   getDefaultProps: function() {
@@ -21,7 +21,8 @@ const Landing = React.createClass({
       <div className="container">
         <Header />
         <div className = "content">
-          <h2>Some Motivational Images To Help You Get Through</h2>
+          <h2>Some Motivational Images To Help You Get By.</h2>
+          <h4>Push Yourself, You Can Do It!</h4>
           <div>
             {this.props.images.map(function(image){
               return(<ImageThumb {...image} key={image.id}/>)
@@ -35,7 +36,7 @@ const Landing = React.createClass({
 
 const mapStateToProps = (state) => { 
   return { 
-    images: state.images,
+    images: state.images
   }
 }
 
