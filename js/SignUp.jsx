@@ -50,11 +50,11 @@ const SignUp = React.createClass({
           <small>Welcome friend!</small>
         </div>
         <form id="myform" onSubmit={this.signUp}>
-          <input type="text" name="signUpEmail" ref="email" id="emailFormId" placeholder="Email" required/>
+          <input type="text" ref="email" placeholder="Email" required/>
 
-          <input type="text" name="signUpPass" id="passwordForm" placeholder="Password" required ref="passForm" onChange = { this.onChange }/>
+          <input type="password" placeholder="Password" required ref="passForm" onChange = { this.onChange }/>
 
-          <input type="text" name="signUpConfirmPass" id="confirmPasswordForm" placeholder="Confirm Password" required ref="confirmPass" onChange = { this.passwordMatch }/>
+          <input type="password" placeholder="Confirm Password" required ref="confirmPass" onChange = { this.passwordMatch }/>
           <button type="submit" className="userSubmit">Sign Up</button>
         </form>
       </div>

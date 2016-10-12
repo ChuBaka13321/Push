@@ -117,6 +117,7 @@ h4, h2{
   border: 1px solid LightSkyBlue;
   border-radius: 4px;
   width: 90%;
+  color: black;
 }
 
 input:focus {
@@ -218,4 +219,8 @@ input:focus {
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
   background-color: gray;
+}
+
+img {
+  border-radius: 5px;
 }

@@ -23,9 +23,9 @@ const SignIn = React.createClass({
           <small>Welcome back!</small>
         </div>
         <form id="myform" onSubmit={this.signInUser}>
-          <input type="text" name="signInEmail" ref="email" id="emailFormId" placeholder="Email" required/>
+          <input type="text" ref="email" placeholder="Email" required/>
 
-          <input type="text" name="signInPass" id="passwordForm" placeholder="Password" required ref="passForm" onChange = { this.onChange }/>
+          <input type="password" placeholder="Password" required ref="passForm" onChange = { this.onChange }/>
           <button type="submit" className="userSubmit">Sign In</button>
         </form>
       </div>

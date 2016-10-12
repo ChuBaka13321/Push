@@ -27607,9 +27607,9 @@
 	      React.createElement(
 	        'form',
 	        { id: 'myform', onSubmit: this.signUp },
-	        React.createElement('input', { type: 'text', name: 'signUpEmail', ref: 'email', id: 'emailFormId', placeholder: 'Email', required: true }),
-	        React.createElement('input', { type: 'text', name: 'signUpPass', id: 'passwordForm', placeholder: 'Password', required: true, ref: 'passForm', onChange: this.onChange }),
-	        React.createElement('input', { type: 'text', name: 'signUpConfirmPass', id: 'confirmPasswordForm', placeholder: 'Confirm Password', required: true, ref: 'confirmPass', onChange: this.passwordMatch }),
+	        React.createElement('input', { type: 'text', ref: 'email', placeholder: 'Email', required: true }),
+	        React.createElement('input', { type: 'password', placeholder: 'Password', required: true, ref: 'passForm', onChange: this.onChange }),
+	        React.createElement('input', { type: 'password', placeholder: 'Confirm Password', required: true, ref: 'confirmPass', onChange: this.passwordMatch }),
 	        React.createElement(
 	          'button',
 	          { type: 'submit', className: 'userSubmit' },
@@ -31424,8 +31424,8 @@
 	      React.createElement(
 	        'form',
 	        { id: 'myform', onSubmit: this.signInUser },
-	        React.createElement('input', { type: 'text', name: 'signInEmail', ref: 'email', id: 'emailFormId', placeholder: 'Email', required: true }),
-	        React.createElement('input', { type: 'text', name: 'signInPass', id: 'passwordForm', placeholder: 'Password', required: true, ref: 'passForm', onChange: this.onChange }),
+	        React.createElement('input', { type: 'text', ref: 'email', placeholder: 'Email', required: true }),
+	        React.createElement('input', { type: 'password', placeholder: 'Password', required: true, ref: 'passForm', onChange: this.onChange }),
 	        React.createElement(
 	          'button',
 	          { type: 'submit', className: 'userSubmit' },
