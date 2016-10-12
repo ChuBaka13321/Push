@@ -27410,7 +27410,13 @@
 	    });
 	  },
 
-	  openModal: function openModal() {
+	  openModalSignUp: function openModalSignUp() {
+	    this.toggleSignUp();
+	    this.refs.testingRef.style.display = "block";
+	  },
+
+	  openModalSignIn: function openModalSignIn() {
+	    this.toggleSignIn();
 	    this.refs.testingRef.style.display = "block";
 	  },
 
@@ -27447,12 +27453,12 @@
 	      null,
 	      React.createElement(
 	        'button',
-	        { className: 'signUpIn', onClick: this.openModal },
+	        { className: 'signUpIn', onClick: this.openModalSignUp },
 	        'Sign Up'
 	      ),
 	      React.createElement(
 	        'button',
-	        { className: 'signUpIn', onClick: this.openModal },
+	        { className: 'signUpIn', onClick: this.openModalSignIn },
 	        'Sign In'
 	      ),
 	      React.createElement(

@@ -25,7 +25,13 @@ const ModalTest = React.createClass({
     });
   },
 
-  openModal: function() {
+  openModalSignUp: function() {
+    this.toggleSignUp();
+    this.refs.testingRef.style.display = "block";
+  },
+
+  openModalSignIn: function() {
+    this.toggleSignIn();
     this.refs.testingRef.style.display = "block";
   },
 
@@ -59,7 +65,7 @@ const ModalTest = React.createClass({
     };
     return (
       <div>
-        <button className="signUpIn" onClick={this.openModal}>Sign Up</button><button className="signUpIn" onClick={this.openModal}>Sign In</button>
+        <button className="signUpIn" onClick={this.openModalSignUp}>Sign Up</button><button className="signUpIn" onClick={this.openModalSignIn}>Sign In</button>
         <div id="myModal" className="modal" ref="testingRef">
         
           <div className="modal-content">
