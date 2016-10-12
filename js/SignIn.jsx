@@ -18,14 +18,15 @@ const SignIn = React.createClass({
   render() {
     return (
       <div>
-        <h1>Sign In</h1>
+        <div className = "modalHeader">
+          <h2>Sign In</h2>
+          <small>Welcome back!</small>
+        </div>
         <form id="myform" onSubmit={this.signInUser}>
-          <label>Email</label>
-          <input type="text" name="signUpEmail" ref="email" id="emailFormId" required/>
+          <input type="text" name="signInEmail" ref="email" id="emailFormId" placeholder="Email" required/>
 
-          <label>Password</label>
-          <input type="text" name="signUpPass" id="passwordForm" required ref="passForm" onChange = { this.onChange }/>
-          <button type="submit" id="mysubmit">Sign In</button>
+          <input type="text" name="signInPass" id="passwordForm" placeholder="Password" required ref="passForm" onChange = { this.onChange }/>
+          <button type="submit" className="userSubmit">Sign In</button>
         </form>
       </div>
     )

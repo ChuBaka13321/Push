@@ -27385,6 +27385,10 @@
 	var SignUp = __webpack_require__(243);
 	var SignIn = __webpack_require__(297);
 
+	var _require = __webpack_require__(179);
+
+	var Link = _require.Link;
+
 	// saving this for reference currently
 	// <button id="myBtn" onClick={this.openModal}>Sign Up/Sign In</button>
 
@@ -27443,9 +27447,38 @@
 	  render: function render() {
 	    var active = this.state.active;
 	    var modal = void 0;
+	    var modalSignUpOrIn = void 0;
 	    if (active === 'SIGNUP') {
 	      modal = React.createElement(SignUp, null);
+	      modalSignUpOrIn = React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'h4',
+	          null,
+	          'Already have an ',
+	          React.createElement(
+	            Link,
+	            { onClick: this.toggleSignIn },
+	            'account?'
+	          )
+	        )
+	      );
 	    } else if (active === 'SIGNIN') {
+	      modalSignUpOrIn = React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'h4',
+	          null,
+	          'Need an ',
+	          React.createElement(
+	            Link,
+	            { onClick: this.toggleSignUp },
+	            'account?'
+	          )
+	        )
+	      );
 	      modal = React.createElement(SignIn, null);
 	    };
 	    return React.createElement(
@@ -27472,17 +27505,8 @@
 	            { className: 'close', onClick: this.closeModal },
 	            'x'
 	          ),
-	          React.createElement(
-	            'button',
-	            { type: 'button', onClick: this.toggleSignUp },
-	            'Sign Up'
-	          ),
-	          React.createElement(
-	            'button',
-	            { type: 'button', onClick: this.toggleSignIn },
-	            'Sign In'
-	          ),
-	          modal
+	          modal,
+	          modalSignUpOrIn
 	        )
 	      )
 	    );
@@ -27567,34 +27591,28 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        'h1',
-	        null,
-	        'Sign Up'
+	        'div',
+	        { className: 'modalHeader' },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Sign Up'
+	        ),
+	        React.createElement(
+	          'small',
+	          null,
+	          'Welcome friend!'
+	        )
 	      ),
 	      React.createElement(
 	        'form',
 	        { id: 'myform', onSubmit: this.signUp },
-	        React.createElement(
-	          'label',
-	          null,
-	          'Email'
-	        ),
-	        React.createElement('input', { type: 'text', name: 'signUpEmail', ref: 'email', id: 'emailFormId', required: true }),
-	        React.createElement(
-	          'label',
-	          null,
-	          'Password'
-	        ),
-	        React.createElement('input', { type: 'text', name: 'signUpPass', id: 'passwordForm', required: true, ref: 'passForm', onChange: this.onChange }),
-	        React.createElement(
-	          'label',
-	          null,
-	          'Confirm Password'
-	        ),
-	        React.createElement('input', { type: 'text', name: 'signUpConfirmPass', id: 'confirmPasswordForm', required: true, ref: 'confirmPass', onChange: this.passwordMatch }),
+	        React.createElement('input', { type: 'text', name: 'signUpEmail', ref: 'email', id: 'emailFormId', placeholder: 'Email', required: true }),
+	        React.createElement('input', { type: 'text', name: 'signUpPass', id: 'passwordForm', placeholder: 'Password', required: true, ref: 'passForm', onChange: this.onChange }),
+	        React.createElement('input', { type: 'text', name: 'signUpConfirmPass', id: 'confirmPasswordForm', placeholder: 'Confirm Password', required: true, ref: 'confirmPass', onChange: this.passwordMatch }),
 	        React.createElement(
 	          'button',
-	          { type: 'submit', id: 'mysubmit' },
+	          { type: 'submit', className: 'userSubmit' },
 	          'Sign Up'
 	        )
 	      )
@@ -31390,28 +31408,27 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        'h1',
-	        null,
-	        'Sign In'
+	        'div',
+	        { className: 'modalHeader' },
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Sign In'
+	        ),
+	        React.createElement(
+	          'small',
+	          null,
+	          'Welcome back!'
+	        )
 	      ),
 	      React.createElement(
 	        'form',
 	        { id: 'myform', onSubmit: this.signInUser },
-	        React.createElement(
-	          'label',
-	          null,
-	          'Email'
-	        ),
-	        React.createElement('input', { type: 'text', name: 'signUpEmail', ref: 'email', id: 'emailFormId', required: true }),
-	        React.createElement(
-	          'label',
-	          null,
-	          'Password'
-	        ),
-	        React.createElement('input', { type: 'text', name: 'signUpPass', id: 'passwordForm', required: true, ref: 'passForm', onChange: this.onChange }),
+	        React.createElement('input', { type: 'text', name: 'signInEmail', ref: 'email', id: 'emailFormId', placeholder: 'Email', required: true }),
+	        React.createElement('input', { type: 'text', name: 'signInPass', id: 'passwordForm', placeholder: 'Password', required: true, ref: 'passForm', onChange: this.onChange }),
 	        React.createElement(
 	          'button',
-	          { type: 'submit', id: 'mysubmit' },
+	          { type: 'submit', className: 'userSubmit' },
 	          'Sign In'
 	        )
 	      )

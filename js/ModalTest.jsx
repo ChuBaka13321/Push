@@ -1,6 +1,7 @@
 const React = require('react');
 const SignUp = require('./SignUp')
 const SignIn = require('./SignIn')
+const { Link } = require('react-router');
 
 // saving this for reference currently
 // <button id="myBtn" onClick={this.openModal}>Sign Up/Sign In</button>
@@ -58,9 +59,20 @@ const ModalTest = React.createClass({
   render() {
     const active = this.state.active;
     let modal;
+    let modalSignUpOrIn;
     if(active === 'SIGNUP') {
       modal = <SignUp />;
+      modalSignUpOrIn = (
+        <div>
+          <h4>Already have an <Link onClick={this.toggleSignIn}>account?</Link></h4>
+        </div>
+      )
     } else if(active === 'SIGNIN') {
+      modalSignUpOrIn = (
+        <div>
+          <h4>Need an <Link onClick={this.toggleSignUp}>account?</Link></h4>
+        </div>
+      )
       modal = <SignIn />;
     };
     return (
@@ -69,13 +81,8 @@ const ModalTest = React.createClass({
         <div id="myModal" className="modal" ref="modalRef">
           <div className="modal-content">
             <span className="close" onClick={this.closeModal}>x</span>
-            <button type="button" onClick={this.toggleSignUp}>
-              Sign Up
-            </button>
-            <button type="button" onClick={this.toggleSignIn}>
-              Sign In
-            </button>
             {modal}
+            {modalSignUpOrIn}
           </div>
 
         </div>

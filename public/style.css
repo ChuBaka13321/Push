@@ -72,19 +72,6 @@ h4, h2{
   max-width: 450px;
 }
 
-.inputLabels {
-  display: block;
-}
-
-input {
-  display: block;
-  margin: auto;
-  width: 400px;
-}
-
-
-
-
 /* MODAL TEST STYLES*/
 .modal {
   display: none; /* Hidden by default */
@@ -94,38 +81,82 @@ input {
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
+  /*overflow: auto;  removing scroll for time being */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
 .modal-content {
-  background-color: #fefefe;
+  background-color: black;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  border: 1px solid black;
+  width: 35%; /* Could be more or less, depending on screen size */
+  border-radius: 10px;
+  font-size: 18px;
 }
-input {
-  background-color: rgba(220, 220, 220, .8)
+
+.modalHeader {
+  margin: 0 auto; /*positions the div in the center*/
+  width: 70%; /*determines the width of the div*/
+}
+
+.modalHeader h2, small{
+  display: inline;
+}
+
+.modalHeader small {
+  color: #808080
+}
+
+.modal-content input {
+  display: block;
+  background-color: #E3E3E3;
+  margin: 12px auto;
+  border: 1px solid LightSkyBlue;
+  border-radius: 4px;
+  width: 90%;
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid MediumSeaGreen;
+}
+
+.modal-content a:hover {
+  color: #aaa;
+  cursor: pointer;
 }
 
 .signUpIn:hover {
   background-color: gray;
 }
 
+.userSubmit {
+  border-radius: 4px;
+  border: none;
+  background-color: #303030;
+  color: MediumSeaGreen;
+}
+
+.userSubmit:hover {
+  background-color: MediumSeaGreen;
+  color: black;
+}
+
 /* The Close Button */
 .close {
-  color: #aaa;
+  color: white;
   float: right;
   font-size: 28px;
   font-weight: bold;
+  margin: 0;
 }
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: #aaa;
   text-decoration: none;
   cursor: pointer;
 }
