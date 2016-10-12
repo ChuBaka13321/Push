@@ -27,22 +27,22 @@ const ModalTest = React.createClass({
 
   openModalSignUp: function() {
     this.toggleSignUp();
-    this.refs.testingRef.style.display = "block";
+    this.refs.modalRef.style.display = "block";
   },
 
   openModalSignIn: function() {
     this.toggleSignIn();
-    this.refs.testingRef.style.display = "block";
+    this.refs.modalRef.style.display = "block";
   },
 
   closeModal: function() {
-    this.refs.testingRef.style.display="none";
+    this.refs.modalRef.style.display="none";
   },
 
   //clickoutside of the modal, closes it
   clickOutside: function(event) {
-    if (event.target === this.refs.testingRef) {
-        this.refs.testingRef.style.display = "none";
+    if (event.target === this.refs.modalRef) {
+        this.refs.modalRef.style.display = "none";
     }
   },
 
@@ -66,8 +66,7 @@ const ModalTest = React.createClass({
     return (
       <div>
         <button className="signUpIn" onClick={this.openModalSignUp}>Sign Up</button><button className="signUpIn" onClick={this.openModalSignIn}>Sign In</button>
-        <div id="myModal" className="modal" ref="testingRef">
-        
+        <div id="myModal" className="modal" ref="modalRef">
           <div className="modal-content">
             <span className="close" onClick={this.closeModal}>x</span>
             <button type="button" onClick={this.toggleSignUp}>

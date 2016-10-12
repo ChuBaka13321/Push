@@ -27412,22 +27412,22 @@
 
 	  openModalSignUp: function openModalSignUp() {
 	    this.toggleSignUp();
-	    this.refs.testingRef.style.display = "block";
+	    this.refs.modalRef.style.display = "block";
 	  },
 
 	  openModalSignIn: function openModalSignIn() {
 	    this.toggleSignIn();
-	    this.refs.testingRef.style.display = "block";
+	    this.refs.modalRef.style.display = "block";
 	  },
 
 	  closeModal: function closeModal() {
-	    this.refs.testingRef.style.display = "none";
+	    this.refs.modalRef.style.display = "none";
 	  },
 
 	  //clickoutside of the modal, closes it
 	  clickOutside: function clickOutside(event) {
-	    if (event.target === this.refs.testingRef) {
-	      this.refs.testingRef.style.display = "none";
+	    if (event.target === this.refs.modalRef) {
+	      this.refs.modalRef.style.display = "none";
 	    }
 	  },
 
@@ -27463,7 +27463,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { id: 'myModal', className: 'modal', ref: 'testingRef' },
+	        { id: 'myModal', className: 'modal', ref: 'modalRef' },
 	        React.createElement(
 	          'div',
 	          { className: 'modal-content' },
@@ -31614,15 +31614,6 @@
 	var browserHistory = _require2.browserHistory;
 	var object = React.PropTypes.object;
 
-	// {this.props.favorites
-	//             .filter(function(image) {
-	//               if(localStorage[image.id]) {
-	//                 return image;
-	//               }
-	//             })
-	//             .map(function(image){
-	//               return(<ImageThumb {...image} key={image.id}/>)
-	//             })}
 
 	var Favorites = React.createClass({
 	  displayName: 'Favorites',
@@ -31683,7 +31674,7 @@
 	      React.createElement(Header, null),
 	      React.createElement(
 	        'div',
-	        { className: 'images' },
+	        { className: 'content' },
 	        React.createElement(
 	          'h2',
 	          null,

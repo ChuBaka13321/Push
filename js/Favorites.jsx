@@ -7,15 +7,6 @@ const UserActions = require('./UserActions');
 const { Link, browserHistory } = require('react-router');
 const { object } = React.PropTypes
 
-// {this.props.favorites
-//             .filter(function(image) {
-//               if(localStorage[image.id]) {
-//                 return image;
-//               }
-//             })
-//             .map(function(image){
-//               return(<ImageThumb {...image} key={image.id}/>)
-//             })}
 const Favorites = React.createClass({
   getDefaultProps: function() {
     return {
@@ -52,7 +43,7 @@ const Favorites = React.createClass({
     return (
       <div className="container">
         <Header/>
-        <div className="images">
+        <div className="content">
           <h2>Your Favorites Collection</h2>
           <div>
             {favs}
