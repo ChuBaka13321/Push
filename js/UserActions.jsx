@@ -17,7 +17,6 @@ module.exports = {
       .then(function(user) {
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            console.log(user, ' is signed in')
             dispatch({type: C.SIGN_IN, email: user.email, uid: user.uid})
 
             // creating the database to prepare for storing of favorites
@@ -40,7 +39,6 @@ module.exports = {
   },
 
   signInUser: function(email, pass) {
-    console.log('yooo')
     return function(dispatch, getState) {
       firebase.auth().signInWithEmailAndPassword(email, pass)
       .then(function(user) {
@@ -70,7 +68,8 @@ module.exports = {
         if (user) {
           // User is signed in.
           dispatch({type: C.SIGN_IN, email: user.email, uid: user.uid})
-          userAction.getFavorites(user.uid);
+          // dispatch and grab current favorites of user
+          dispatch(userAction.getFavorites(user.uid));
         } else {
           // No user is signed in.
           console.log('noone is signed in')
@@ -91,25 +90,32 @@ module.exports = {
   },
 
   saveToFavorites: function(uid, image) {
+    let userAction = this;
     return function(dispatch, getState) {
       // maybe some logic to check whether the image is already in the favorites
 
-      // Write the new post's data simultaneously in the posts list and the user's post list.
       var updates = {};
       updates['/users/' + uid + '/favorites/' + image.id] = image;
 
-      firebase.database().ref().update(updates);
+      firebase.database().ref().update(updates).then(function() {
+        // reupdate favorites
+        dispatch(userAction.getFavorites(uid));
+      })
 
       // send a dispatch to notify the frontend that the image has been stored
     }
   },
 
   removeFromFavorites: function(uid, image) {
+    let userAction = this;
     return function(dispatch, getState) {
       var updates = {};
       updates['/users/' + uid + '/favorites/' + image.id] = null;
 
-      firebase.database().ref().update(updates);
+      firebase.database().ref().update(updates).then(function() {
+        // reupdate favorites
+        dispatch(userAction.getFavorites(uid));
+      })
     }
   },
 
@@ -121,19 +127,6 @@ module.exports = {
         dispatch({type: C.FAVORITES, favorites: favorites})
         // ...
       });
-    }
-  },
-
-  checkFavorites: function(userId, imageId) {
-    return function(dispatch, getState) {
-      firebase.database().ref('/users/' + userId + '/favorites/').once('value').then(function(snapshot) {
-        let favorites = snapshot.val() || {};
-        if(favorites[imageId]) {
-          dispatch({type: C.IN_FAVORITES, inFavorites: true})
-        } else {
-          dispatch({type: C.IN_FAVORITES, inFavorites: false})
-        }
-      })
     }
   }
 }

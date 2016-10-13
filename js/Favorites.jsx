@@ -24,11 +24,9 @@ const Favorites = React.createClass({
   render(){
     let favs;
     let images;
-    console.log(this.props.favorites, 'this.props.favorites yo')
     if(Object.keys(this.props.favorites).length > 0)  {
       images = [];
       for(let imageId in this.props.favorites) {
-        console.log(this.props.favorites[imageId])
         images.push(<ImageThumb {...this.props.favorites[imageId]} key={imageId}/>);
       }
       images.sort(function(a, b) {
@@ -74,10 +72,8 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-// Favorites.propTypes = {
-//   favorites: object.isRequired
-// }
+Favorites.propTypes = {
+  favorites: object.isRequired
+}
 
 module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Favorites);
-// module.exports = Favorites;
-// module.exports = connector(Favorites);

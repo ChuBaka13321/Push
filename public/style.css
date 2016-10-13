@@ -241,3 +241,22 @@ input:focus {
 img {
   border-radius: 5px;
 }
+
+.favoritesButton {
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  background-color: #303030;
+  color: LightSkyBlue;
+  width: 20%;
+}
+
+.favoritesButton:hover {
+  background-color: #0099cc;
+  color: black;
+}
+
+.favoritesButton:focus {
+  outline: none;
+}

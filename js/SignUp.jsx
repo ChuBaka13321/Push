@@ -40,8 +40,6 @@ const SignUp = React.createClass({
     this.closeModal();
   },
 
-
-
   render() {
     return (
       <div>
@@ -76,9 +74,5 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-// module.exports = ReactRedux.connect(mapDispatchToProps)(SignUp);
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUp);
 
-// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUp);
-// module.exports = SignUp;
-// module.exports = connector(SignUp);
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUp);

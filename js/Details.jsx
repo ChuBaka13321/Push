@@ -15,22 +15,42 @@ const Details = React.createClass({
 
   componentDidMount: function(){
     this.props.setImages()
-    if(this.props.uid) {
-      this.props.checkFavorites(this.props.uid, this.props.params.id);
-    }
   },
 
   assignImage(id) {
     const imageArray = this.props.images.filter((image) => image.id === id);
+    // let isVideo = (imageArray[0].title.split(' ')[0] === '[Video]');
+    // if(isVideo) {
+    //   imageArray[0].link = "http://i.imgur.com/" + imageArray[0].cover + ".mp4"
+    // }
     return imageArray[0] || {title:'hi', link: 'stuff', description: 'k'};
   },
 
   render() {
     //add link to view image on imgur itself
-    const { title, link, description } = this.assignImage(this.props.params.id);
+    const { title, link, description, cover} = this.assignImage(this.props.params.id);
+    let imageOrVideo;
+    let inFavoritesProp;
     let favoritesButton;
+    if(title.split(' ')[0] === '[Video]') {
+      let videoLink = "http://i.imgur.com/" + cover + ".mp4"
+      imageOrVideo = (
+        <video className="detailsImage" autoPlay controls>
+          <source src={videoLink} type="video/mp4"/>
+        </video>
+      )
+    } else {
+      imageOrVideo = (<img alt="" src={link} className="detailsImage" />);
+    }
+
+    if(this.props.favorites[this.props.params.id]) {
+      inFavoritesProp = true;
+    } else {
+      inFavoritesProp = false;
+    }
+
     if(this.props.uid) {
-      favoritesButton = (<SaveFavorites image = {this.assignImage(this.props.params.id)} inFavorites = {this.props.inFavorites}/>)
+      favoritesButton = (<SaveFavorites image = {this.assignImage(this.props.params.id)} inFavorites = {inFavoritesProp}/>)
     } else {
       favoritesButton = (<h4>Sign Up or Sign In to save this to your favorites!</h4>);
     };
@@ -39,7 +59,7 @@ const Details = React.createClass({
         <Header />
         <div className="content">
           <h2>{title}</h2>
-          <img alt="" src={link} className="detailsImage" />
+          {imageOrVideo}
           <p>{description}</p>
           {favoritesButton}
         </div>
@@ -52,7 +72,7 @@ const mapStateToProps = (state) => {
   return { 
     images: state.images,
     uid: state.uid,
-    inFavorites: state.inFavorites
+    favorites: state.favorites
   }
 }
 
@@ -60,9 +80,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setImages: () => {
       dispatch(ImageActions.getImages())
-    },
-    checkFavorites: function(userId, imageId) {
-      dispatch(UserActions.checkFavorites(userId, imageId))
     }
   }
 }

@@ -9,8 +9,7 @@ const initialState = {
   images: [],
   favorites: {},
   email: '',
-  uid: '',
-  inFavorites: false,
+  uid: ''
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -23,8 +22,6 @@ const rootReducer = (state = initialState, action) => {
       return signOutUser(state, action.email, action.uid, action.favorites)
     case C.FAVORITES:
       return assignFavorites(state, action.favorites)
-    case C.IN_FAVORITES:
-      return imageInFavorites(state, action.inFavorites)
     default:
       return state
   }
@@ -65,12 +62,6 @@ const signOutUser = (state, email, uid) => {
 const assignFavorites = (state, favorites) => {
   const newState = {};
   Object.assign(newState, state, {favorites: favorites});
-  return newState;
-}
-
-const imageInFavorites = (state, inFavorites) => {
-  const newState = {};
-  Object.assign(newState, state, {inFavorites: inFavorites});
   return newState;
 }
 

@@ -22,9 +22,9 @@ const SaveFavorites = React.createClass({
   render() {
     let saveOrRemove;
     if(this.props.inFavorites) {
-      saveOrRemove = (<button type="button" onClick = {this.removeFromFavorites}>Remove from Favorites</button>)
+      saveOrRemove = (<button type="button" className="favoritesButton" onClick = {this.removeFromFavorites}>Remove from Favorites</button>)
     } else {
-      saveOrRemove = (<button type="button" onClick = {this.saveToFavorites}>Save to Favorites</button>)
+      saveOrRemove = (<button type="button" className="favoritesButton" onClick = {this.saveToFavorites}>Save to Favorites</button>)
     }
     return(
       <div>
@@ -37,7 +37,8 @@ const SaveFavorites = React.createClass({
 const mapStateToProps = (state) => { 
   return { 
     email: state.email,
-    uid: state.uid
+    uid: state.uid,
+    favorites: state.favorites
   }
 }
 

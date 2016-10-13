@@ -21586,14 +21586,11 @@
 
 	var ImageThumb = function ImageThumb(props) {
 	  var subLink = void 0;
-	  var aLink = void 0;
 	  if (props.cover) {
 	    subLink = "http://i.imgur.com/" + props.cover + "b.jpg";
-	    aLink = "http://i.imgur.com/" + props.cover + ".jpg";
 	  } else {
 	    var len = props.link.length;
 	    subLink = props.link.substr(0, len - 4) + "b" + props.link.substr(len - 4, len);
-	    aLink = props.link.substr(0, len - 4) + props.link.substr(len - 4, len);
 	  }
 
 	  return React.createElement(
@@ -21622,7 +21619,7 @@
 	var Link = _require.Link;
 	var browserHistory = _require.browserHistory;
 
-	var Modal = __webpack_require__(301);
+	var SignUpIn = __webpack_require__(302);
 
 	var _require2 = __webpack_require__(244);
 
@@ -21634,7 +21631,7 @@
 	var Header = React.createClass({
 	  displayName: 'Header',
 
-	  componentDidMount: function componentDidMount() {
+	  componentWillMount: function componentWillMount() {
 	    this.props.checkUser();
 	  },
 
@@ -21646,7 +21643,6 @@
 	  render: function render() {
 	    var signInOrOut = void 0;
 	    if (this.props.email && this.props.uid) {
-	      // signInOrOut = (<button type="button" onClick = {this.props.signOut} >Sign Out</button>)
 	      signInOrOut = React.createElement(
 	        'div',
 	        { className: 'dropdown' },
@@ -21671,7 +21667,7 @@
 	        )
 	      );
 	    } else {
-	      signInOrOut = React.createElement(Modal, null);
+	      signInOrOut = React.createElement(SignUpIn, null);
 	    }
 
 	    return React.createElement(
@@ -27474,12 +27470,7 @@
 	  };
 	};
 
-	// module.exports = ReactRedux.connect(mapDispatchToProps)(SignUp);
 	module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUp);
-
-	// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUp);
-	// module.exports = SignUp;
-	// module.exports = connector(SignUp);
 
 /***/ },
 /* 244 */
@@ -27502,8 +27493,7 @@
 	  images: [],
 	  favorites: {},
 	  email: '',
-	  uid: '',
-	  inFavorites: false
+	  uid: ''
 	};
 
 	var rootReducer = function rootReducer() {
@@ -27519,8 +27509,6 @@
 	      return signOutUser(state, action.email, action.uid, action.favorites);
 	    case C.FAVORITES:
 	      return assignFavorites(state, action.favorites);
-	    case C.IN_FAVORITES:
-	      return imageInFavorites(state, action.inFavorites);
 	    default:
 	      return state;
 	  }
@@ -27556,12 +27544,6 @@
 	var assignFavorites = function assignFavorites(state, favorites) {
 	  var newState = {};
 	  Object.assign(newState, state, { favorites: favorites });
-	  return newState;
-	};
-
-	var imageInFavorites = function imageInFavorites(state, inFavorites) {
-	  var newState = {};
-	  Object.assign(newState, state, { inFavorites: inFavorites });
 	  return newState;
 	};
 
@@ -29070,7 +29052,6 @@
 	  SIGN_IN: 'signIn',
 	  SIGN_OUT: 'signOut',
 	  FAVORITES: 'favorites',
-	  IN_FAVORITES: 'inFavorites',
 
 	  CLOSE_MODAL: 'closeModal'
 	};
@@ -30471,7 +30452,6 @@
 	      firebase.auth().createUserWithEmailAndPassword(email, pass).then(function (user) {
 	        firebase.auth().onAuthStateChanged(function (user) {
 	          if (user) {
-	            console.log(user, ' is signed in');
 	            dispatch({ type: C.SIGN_IN, email: user.email, uid: user.uid });
 
 	            // creating the database to prepare for storing of favorites
@@ -30493,7 +30473,6 @@
 	  },
 
 	  signInUser: function signInUser(email, pass) {
-	    console.log('yooo');
 	    return function (dispatch, getState) {
 	      firebase.auth().signInWithEmailAndPassword(email, pass).then(function (user) {
 	        firebase.auth().onAuthStateChanged(function (user) {
@@ -30521,7 +30500,8 @@
 	        if (user) {
 	          // User is signed in.
 	          dispatch({ type: C.SIGN_IN, email: user.email, uid: user.uid });
-	          userAction.getFavorites(user.uid);
+	          // dispatch and grab current favorites of user
+	          dispatch(userAction.getFavorites(user.uid));
 	        } else {
 	          // No user is signed in.
 	          console.log('noone is signed in');
@@ -30542,25 +30522,32 @@
 	  },
 
 	  saveToFavorites: function saveToFavorites(uid, image) {
+	    var userAction = this;
 	    return function (dispatch, getState) {
 	      // maybe some logic to check whether the image is already in the favorites
 
-	      // Write the new post's data simultaneously in the posts list and the user's post list.
 	      var updates = {};
 	      updates['/users/' + uid + '/favorites/' + image.id] = image;
 
-	      firebase.database().ref().update(updates);
+	      firebase.database().ref().update(updates).then(function () {
+	        // reupdate favorites
+	        dispatch(userAction.getFavorites(uid));
+	      });
 
 	      // send a dispatch to notify the frontend that the image has been stored
 	    };
 	  },
 
 	  removeFromFavorites: function removeFromFavorites(uid, image) {
+	    var userAction = this;
 	    return function (dispatch, getState) {
 	      var updates = {};
 	      updates['/users/' + uid + '/favorites/' + image.id] = null;
 
-	      firebase.database().ref().update(updates);
+	      firebase.database().ref().update(updates).then(function () {
+	        // reupdate favorites
+	        dispatch(userAction.getFavorites(uid));
+	      });
 	    };
 	  },
 
@@ -30571,19 +30558,6 @@
 	        var favorites = snapshot.val() || {};
 	        dispatch({ type: C.FAVORITES, favorites: favorites });
 	        // ...
-	      });
-	    };
-	  },
-
-	  checkFavorites: function checkFavorites(userId, imageId) {
-	    return function (dispatch, getState) {
-	      firebase.database().ref('/users/' + userId + '/favorites/').once('value').then(function (snapshot) {
-	        var favorites = snapshot.val() || {};
-	        if (favorites[imageId]) {
-	          dispatch({ type: C.IN_FAVORITES, inFavorites: true });
-	        } else {
-	          dispatch({ type: C.IN_FAVORITES, inFavorites: false });
-	        }
 	      });
 	    };
 	  }
@@ -31332,15 +31306,16 @@
 
 	  componentDidMount: function componentDidMount() {
 	    this.props.setImages();
-	    if (this.props.uid) {
-	      this.props.checkFavorites(this.props.uid, this.props.params.id);
-	    }
 	  },
 
 	  assignImage: function assignImage(id) {
 	    var imageArray = this.props.images.filter(function (image) {
 	      return image.id === id;
 	    });
+	    // let isVideo = (imageArray[0].title.split(' ')[0] === '[Video]');
+	    // if(isVideo) {
+	    //   imageArray[0].link = "http://i.imgur.com/" + imageArray[0].cover + ".mp4"
+	    // }
 	    return imageArray[0] || { title: 'hi', link: 'stuff', description: 'k' };
 	  },
 	  render: function render() {
@@ -31350,10 +31325,30 @@
 	    var title = _assignImage.title;
 	    var link = _assignImage.link;
 	    var description = _assignImage.description;
+	    var cover = _assignImage.cover;
 
+	    var imageOrVideo = void 0;
+	    var inFavoritesProp = void 0;
 	    var favoritesButton = void 0;
+	    if (title.split(' ')[0] === '[Video]') {
+	      var videoLink = "http://i.imgur.com/" + cover + ".mp4";
+	      imageOrVideo = React.createElement(
+	        'video',
+	        { className: 'detailsImage', autoPlay: true, controls: true },
+	        React.createElement('source', { src: videoLink, type: 'video/mp4' })
+	      );
+	    } else {
+	      imageOrVideo = React.createElement('img', { alt: '', src: link, className: 'detailsImage' });
+	    }
+
+	    if (this.props.favorites[this.props.params.id]) {
+	      inFavoritesProp = true;
+	    } else {
+	      inFavoritesProp = false;
+	    }
+
 	    if (this.props.uid) {
-	      favoritesButton = React.createElement(SaveFavorites, { image: this.assignImage(this.props.params.id), inFavorites: this.props.inFavorites });
+	      favoritesButton = React.createElement(SaveFavorites, { image: this.assignImage(this.props.params.id), inFavorites: inFavoritesProp });
 	    } else {
 	      favoritesButton = React.createElement(
 	        'h4',
@@ -31373,7 +31368,7 @@
 	          null,
 	          title
 	        ),
-	        React.createElement('img', { alt: '', src: link, className: 'detailsImage' }),
+	        imageOrVideo,
 	        React.createElement(
 	          'p',
 	          null,
@@ -31389,7 +31384,7 @@
 	  return {
 	    images: state.images,
 	    uid: state.uid,
-	    inFavorites: state.inFavorites
+	    favorites: state.favorites
 	  };
 	};
 
@@ -31397,9 +31392,6 @@
 	  return {
 	    setImages: function setImages() {
 	      dispatch(ImageActions.getImages());
-	    },
-	    checkFavorites: function checkFavorites(userId, imageId) {
-	      dispatch(UserActions.checkFavorites(userId, imageId));
 	    }
 	  };
 	};
@@ -31437,13 +31429,13 @@
 	    if (this.props.inFavorites) {
 	      saveOrRemove = React.createElement(
 	        'button',
-	        { type: 'button', onClick: this.removeFromFavorites },
+	        { type: 'button', className: 'favoritesButton', onClick: this.removeFromFavorites },
 	        'Remove from Favorites'
 	      );
 	    } else {
 	      saveOrRemove = React.createElement(
 	        'button',
-	        { type: 'button', onClick: this.saveToFavorites },
+	        { type: 'button', className: 'favoritesButton', onClick: this.saveToFavorites },
 	        'Save to Favorites'
 	      );
 	    }
@@ -31458,7 +31450,8 @@
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    email: state.email,
-	    uid: state.uid
+	    uid: state.uid,
+	    favorites: state.favorites
 	  };
 	};
 
@@ -31521,11 +31514,9 @@
 	  render: function render() {
 	    var favs = void 0;
 	    var images = void 0;
-	    console.log(this.props.favorites, 'this.props.favorites yo');
 	    if (Object.keys(this.props.favorites).length > 0) {
 	      images = [];
 	      for (var imageId in this.props.favorites) {
-	        console.log(this.props.favorites[imageId]);
 	        images.push(React.createElement(ImageThumb, _extends({}, this.props.favorites[imageId], { key: imageId })));
 	      }
 	      images.sort(function (a, b) {
@@ -31597,16 +31588,15 @@
 	  };
 	};
 
-	// Favorites.propTypes = {
-	//   favorites: object.isRequired
-	// }
+	Favorites.propTypes = {
+	  favorites: object.isRequired
+	};
 
 	module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Favorites);
-	// module.exports = Favorites;
-	// module.exports = connector(Favorites);
 
 /***/ },
-/* 301 */
+/* 301 */,
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31620,8 +31610,8 @@
 	var Link = _require.Link;
 
 
-	var ModalTest = React.createClass({
-	  displayName: 'ModalTest',
+	var SignUpIn = React.createClass({
+	  displayName: 'SignUpIn',
 
 	  ///////testing two components
 	  getInitialState: function getInitialState() {
@@ -31755,9 +31745,9 @@
 	//   }
 	// }
 
-	// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ModalTest);
+	// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUpIn);
 
-	module.exports = ModalTest;
+	module.exports = SignUpIn;
 
 /***/ }
 /******/ ]);

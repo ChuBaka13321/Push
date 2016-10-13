@@ -3,7 +3,7 @@ const SignUp = require('./SignUp')
 const SignIn = require('./SignIn')
 const { Link } = require('react-router');
 
-const ModalTest = React.createClass({
+const SignUpIn = React.createClass({
 ///////testing two components
   getInitialState: function () {
     return {
@@ -102,6 +102,6 @@ const ModalTest = React.createClass({
 //   }
 // }
 
-// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ModalTest);
+// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SignUpIn);
 
-module.exports = ModalTest;
+module.exports = SignUpIn;

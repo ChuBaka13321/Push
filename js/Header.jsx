@@ -1,24 +1,23 @@
 const React = require('react');
 const { Link, browserHistory } = require('react-router');
-const Modal = require('./Modal');
+const SignUpIn = require('./SignUpIn');
 const { connector } = require('./Store');
 const ReactRedux = require('react-redux');
 const UserActions = require('./UserActions');
 
 const Header = React.createClass({
-  componentDidMount: function() {
+  componentWillMount: function() {
     this.props.checkUser();
   },
 
   signOut: function() {
     this.props.signOut();
-    browserHistory.push('/')
+    browserHistory.push('/');
   },
 
   render(){
     let signInOrOut;
     if(this.props.email && this.props.uid) {
-      // signInOrOut = (<button type="button" onClick = {this.props.signOut} >Sign Out</button>)
       signInOrOut = (
         <div className="dropdown">
           <button className="dropbtn">
@@ -35,7 +34,7 @@ const Header = React.createClass({
         </div>
       )
     } else {
-      signInOrOut = (<Modal />);
+      signInOrOut = (<SignUpIn />);
     }
    
     return (
