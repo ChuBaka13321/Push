@@ -21625,7 +21625,7 @@
 	var Link = _require.Link;
 	var browserHistory = _require.browserHistory;
 
-	var ModalTest = __webpack_require__(242);
+	var Modal = __webpack_require__(301);
 
 	var _require2 = __webpack_require__(244);
 
@@ -21675,7 +21675,7 @@
 	        )
 	      );
 	    } else {
-	      signInOrOut = React.createElement(ModalTest, null);
+	      signInOrOut = React.createElement(Modal, null);
 	    }
 
 	    return React.createElement(
@@ -27376,163 +27376,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 242 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-	var SignUp = __webpack_require__(243);
-	var SignIn = __webpack_require__(297);
-
-	var _require = __webpack_require__(179);
-
-	var Link = _require.Link;
-
-	// saving this for reference currently
-	// <button id="myBtn" onClick={this.openModal}>Sign Up/Sign In</button>
-
-	var ModalTest = React.createClass({
-	  displayName: 'ModalTest',
-
-	  ///////testing two components
-	  getInitialState: function getInitialState() {
-	    return {
-	      active: 'SIGNUP'
-	    };
-	  },
-
-	  toggleSignUp: function toggleSignUp() {
-	    this.setState({
-	      active: "SIGNUP"
-	    });
-	  },
-
-	  toggleSignIn: function toggleSignIn() {
-	    this.setState({
-	      active: "SIGNIN"
-	    });
-	  },
-
-	  openModalSignUp: function openModalSignUp() {
-	    this.toggleSignUp();
-	    this.refs.modalRef.style.display = "block";
-	  },
-
-	  openModalSignIn: function openModalSignIn() {
-	    this.toggleSignIn();
-	    this.refs.modalRef.style.display = "block";
-	  },
-
-	  closeModal: function closeModal() {
-	    this.refs.modalRef.style.display = "none";
-	  },
-
-	  //clickoutside of the modal, closes it
-	  clickOutside: function clickOutside(event) {
-	    if (event.target === this.refs.modalRef) {
-	      this.refs.modalRef.style.display = "none";
-	    }
-	  },
-
-	  componentDidMount: function componentDidMount() {
-	    window.addEventListener('click', this.clickOutside);
-	  },
-
-	  componentWillUnmount: function componentWillUnmount() {
-	    console.log('modaltest unmounted');
-	    window.removeEventListener('click', this.clickOutside);
-	  },
-
-	  render: function render() {
-	    var active = this.state.active;
-	    var modal = void 0;
-	    var modalSignUpOrIn = void 0;
-	    if (active === 'SIGNUP') {
-	      modal = React.createElement(SignUp, null);
-	      modalSignUpOrIn = React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'h4',
-	          null,
-	          'Already have an ',
-	          React.createElement(
-	            Link,
-	            { onClick: this.toggleSignIn },
-	            'account?'
-	          )
-	        )
-	      );
-	    } else if (active === 'SIGNIN') {
-	      modalSignUpOrIn = React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'h4',
-	          null,
-	          'Need an ',
-	          React.createElement(
-	            Link,
-	            { onClick: this.toggleSignUp },
-	            'account?'
-	          )
-	        )
-	      );
-	      modal = React.createElement(SignIn, null);
-	    };
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'button',
-	        { className: 'signUpIn', onClick: this.openModalSignUp },
-	        'Sign Up'
-	      ),
-	      React.createElement(
-	        'button',
-	        { className: 'signUpIn', onClick: this.openModalSignIn },
-	        'Sign In'
-	      ),
-	      React.createElement(
-	        'div',
-	        { id: 'myModal', className: 'modal', ref: 'modalRef' },
-	        React.createElement(
-	          'div',
-	          { className: 'modal-content' },
-	          React.createElement(
-	            'span',
-	            { className: 'close', onClick: this.closeModal },
-	            'x'
-	          ),
-	          modal,
-	          modalSignUpOrIn
-	        )
-	      )
-	    );
-	  }
-	});
-
-	// work in progress, get modal to close via redux state change
-	// const mapStateToProps = (state) => { 
-	//   return { 
-	//     images: state.uid,
-	//   }
-	// }
-
-	// const mapDispatchToProps = (dispatch) => {
-	//   return {
-	//     signUpUser: (email, pass) => {
-	//       dispatch(UserActions.signUp(email, pass))
-	//     }
-	//   }
-	// }
-
-	// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ModalTest);
-
-	module.exports = ModalTest;
-
-/***/ },
+/* 242 */,
 /* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31650,14 +31494,18 @@
 	  },
 	  render: function render() {
 	    var favs = void 0;
-	    var test = void 0;
+	    var images = void 0;
 	    console.log(this.props.favorites, 'this.props.favorites yo');
 	    if (Object.keys(this.props.favorites).length > 0) {
-	      test = [];
+	      images = [];
 	      for (var imageId in this.props.favorites) {
 	        console.log(this.props.favorites[imageId]);
-	        test.push(React.createElement(ImageThumb, _extends({}, this.props.favorites[imageId], { key: imageId })));
+	        images.push(React.createElement(ImageThumb, _extends({}, this.props.favorites[imageId], { key: imageId })));
 	      }
+	      images.sort(function (a, b) {
+	        // sorting by newest according to datetime posted via imgur
+	        return b.props.datetime - a.props.datetime;
+	      });
 	      favs = React.createElement(
 	        'div',
 	        null,
@@ -31671,7 +31519,7 @@
 	            'recent images.'
 	          )
 	        ),
-	        test
+	        images
 	      );
 	    } else {
 	      favs = React.createElement(
@@ -31730,6 +31578,163 @@
 	module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Favorites);
 	// module.exports = Favorites;
 	// module.exports = connector(Favorites);
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var SignUp = __webpack_require__(243);
+	var SignIn = __webpack_require__(297);
+
+	var _require = __webpack_require__(179);
+
+	var Link = _require.Link;
+
+	// saving this for reference currently
+	// <button id="myBtn" onClick={this.openModal}>Sign Up/Sign In</button>
+
+	var ModalTest = React.createClass({
+	  displayName: 'ModalTest',
+
+	  ///////testing two components
+	  getInitialState: function getInitialState() {
+	    return {
+	      active: 'SIGNUP'
+	    };
+	  },
+
+	  toggleSignUp: function toggleSignUp() {
+	    this.setState({
+	      active: "SIGNUP"
+	    });
+	  },
+
+	  toggleSignIn: function toggleSignIn() {
+	    this.setState({
+	      active: "SIGNIN"
+	    });
+	  },
+
+	  openModalSignUp: function openModalSignUp() {
+	    this.toggleSignUp();
+	    this.refs.modalRef.style.display = "block";
+	  },
+
+	  openModalSignIn: function openModalSignIn() {
+	    this.toggleSignIn();
+	    this.refs.modalRef.style.display = "block";
+	  },
+
+	  closeModal: function closeModal() {
+	    this.refs.modalRef.style.display = "none";
+	  },
+
+	  //clickoutside of the modal, closes it
+	  clickOutside: function clickOutside(event) {
+	    if (event.target === this.refs.modalRef) {
+	      this.refs.modalRef.style.display = "none";
+	    }
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    window.addEventListener('click', this.clickOutside);
+	  },
+
+	  componentWillUnmount: function componentWillUnmount() {
+	    console.log('modaltest unmounted');
+	    window.removeEventListener('click', this.clickOutside);
+	  },
+
+	  render: function render() {
+	    var active = this.state.active;
+	    var modal = void 0;
+	    var modalSignUpOrIn = void 0;
+	    if (active === 'SIGNUP') {
+	      modal = React.createElement(SignUp, null);
+	      modalSignUpOrIn = React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'h4',
+	          null,
+	          'Already have an ',
+	          React.createElement(
+	            Link,
+	            { onClick: this.toggleSignIn },
+	            'account?'
+	          )
+	        )
+	      );
+	    } else if (active === 'SIGNIN') {
+	      modalSignUpOrIn = React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'h4',
+	          null,
+	          'Need an ',
+	          React.createElement(
+	            Link,
+	            { onClick: this.toggleSignUp },
+	            'account?'
+	          )
+	        )
+	      );
+	      modal = React.createElement(SignIn, null);
+	    };
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'button',
+	        { className: 'signUpIn', onClick: this.openModalSignUp },
+	        'Sign Up'
+	      ),
+	      React.createElement(
+	        'button',
+	        { className: 'signUpIn', onClick: this.openModalSignIn },
+	        'Sign In'
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'myModal', className: 'modal', ref: 'modalRef' },
+	        React.createElement(
+	          'div',
+	          { className: 'modal-content' },
+	          React.createElement(
+	            'span',
+	            { className: 'close', onClick: this.closeModal },
+	            'x'
+	          ),
+	          modal,
+	          modalSignUpOrIn
+	        )
+	      )
+	    );
+	  }
+	});
+
+	// work in progress, get modal to close via redux state change
+	// const mapStateToProps = (state) => { 
+	//   return { 
+	//     images: state.uid,
+	//   }
+	// }
+
+	// const mapDispatchToProps = (dispatch) => {
+	//   return {
+	//     signUpUser: (email, pass) => {
+	//       dispatch(UserActions.signUp(email, pass))
+	//     }
+	//   }
+	// }
+
+	// module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ModalTest);
+
+	module.exports = ModalTest;
 
 /***/ }
 /******/ ]);

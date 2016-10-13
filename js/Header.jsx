@@ -1,6 +1,6 @@
 const React = require('react');
 const { Link, browserHistory } = require('react-router');
-const ModalTest = require('./ModalTest');
+const Modal = require('./Modal');
 const { connector } = require('./Store');
 const ReactRedux = require('react-redux');
 const UserActions = require('./UserActions');
@@ -36,7 +36,7 @@ const Header = React.createClass({
         </div>
       )
     } else {
-      signInOrOut = (<ModalTest />);
+      signInOrOut = (<Modal />);
     }
    
     return (

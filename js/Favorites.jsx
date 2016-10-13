@@ -23,18 +23,22 @@ const Favorites = React.createClass({
   },
   render(){
     let favs;
-    let test;
+    let images;
     console.log(this.props.favorites, 'this.props.favorites yo')
     if(Object.keys(this.props.favorites).length > 0)  {
-      test = [];
+      images = [];
       for(let imageId in this.props.favorites) {
         console.log(this.props.favorites[imageId])
-        test.push(<ImageThumb {...this.props.favorites[imageId]} key={imageId}/>);
+        images.push(<ImageThumb {...this.props.favorites[imageId]} key={imageId}/>);
       }
+      images.sort(function(a, b) {
+        // sorting by newest according to datetime posted via imgur
+        return b.props.datetime - a.props.datetime;
+      })
       favs = (
         <div>
           <h4>Awesome collection so far! Click on your images to view them better or check out the most <Link to={`/`}>recent images.</Link></h4>
-          {test}
+          {images}
         </div>
       );
     } else {
