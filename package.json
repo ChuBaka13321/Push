@@ -2,12 +2,12 @@
   "name": "Push",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch",
-    "start": "node app.js",
-    "postinstall": "webpack"
+    "postinstall": "webpack",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
