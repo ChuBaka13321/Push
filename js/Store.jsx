@@ -9,7 +9,8 @@ const initialState = {
   images: [],
   favorites: {},
   email: '',
-  uid: ''
+  uid: '',
+  inFavorites: false,
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -21,7 +22,9 @@ const rootReducer = (state = initialState, action) => {
     case C.SIGN_OUT:
       return signOutUser(state, action.email, action.uid, action.favorites)
     case C.FAVORITES:
-      return assignFavorites( state, action.favorites)
+      return assignFavorites(state, action.favorites)
+    case C.IN_FAVORITES:
+      return imageInFavorites(state, action.inFavorites)
     default:
       return state
   }
@@ -50,7 +53,6 @@ const setImagesState = (state, data) => {
 const signInUser = (state, email, uid) => {
   const newState = {};
   Object.assign(newState, state, {email: email, uid: uid});
-  console.log('blah')
   return newState;
 }
 
@@ -66,27 +68,12 @@ const assignFavorites = (state, favorites) => {
   return newState;
 }
 
-// called anytime store state is updated, maps to components' props
-// const mapStateToProps = (state) => { 
-//   return { 
-//     images: state.images,
-//     uid: state.uid
-//   }
-// }
+const imageInFavorites = (state, inFavorites) => {
+  const newState = {};
+  Object.assign(newState, state, {inFavorites: inFavorites});
+  return newState;
+}
 
-// //dispatch actions
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     isLoggedIn: () => {
-//       dispatch({type: C.IS_LOGGED_IN});
-//     }
-//   }
-// }
-
-// reactRedux connects React component to a Redux store, exports as "connector" constant
-// const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps)
-// const connector;
 module.exports = { store, rootReducer }
-// module.exports = { connector, store, rootReducer }
 
 

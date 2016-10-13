@@ -90,7 +90,7 @@ module.exports = {
     }
   },
 
-  saveToFavorites: function(email, uid, image) {
+  saveToFavorites: function(uid, image) {
     return function(dispatch, getState) {
       // maybe some logic to check whether the image is already in the favorites
 
@@ -104,6 +104,15 @@ module.exports = {
     }
   },
 
+  removeFromFavorites: function(uid, image) {
+    return function(dispatch, getState) {
+      var updates = {};
+      updates['/users/' + uid + '/favorites/' + image.id] = null;
+
+      firebase.database().ref().update(updates);
+    }
+  },
+
   getFavorites: function(userId) {
     return function(dispatch, getState) {
       firebase.database().ref('/users/' + userId + '/favorites/').once('value').then(function(snapshot) {
@@ -112,6 +121,19 @@ module.exports = {
         dispatch({type: C.FAVORITES, favorites: favorites})
         // ...
       });
+    }
+  },
+
+  checkFavorites: function(userId, imageId) {
+    return function(dispatch, getState) {
+      firebase.database().ref('/users/' + userId + '/favorites/').once('value').then(function(snapshot) {
+        let favorites = snapshot.val() || {};
+        if(favorites[imageId]) {
+          dispatch({type: C.IN_FAVORITES, inFavorites: true})
+        } else {
+          dispatch({type: C.IN_FAVORITES, inFavorites: false})
+        }
+      })
     }
   }
 }

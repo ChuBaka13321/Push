@@ -3,9 +3,6 @@ const SignUp = require('./SignUp')
 const SignIn = require('./SignIn')
 const { Link } = require('react-router');
 
-// saving this for reference currently
-// <button id="myBtn" onClick={this.openModal}>Sign Up/Sign In</button>
-
 const ModalTest = React.createClass({
 ///////testing two components
   getInitialState: function () {
@@ -52,7 +49,6 @@ const ModalTest = React.createClass({
   },
 
   componentWillUnmount: function() {
-    console.log('modaltest unmounted')
     window.removeEventListener('click', this.clickOutside);
   },
 

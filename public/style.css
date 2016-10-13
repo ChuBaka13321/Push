@@ -54,13 +54,15 @@ html, body {
   border-radius: 10px;
 }
 .headerLink:hover {
-  background-color: gray;
+  background-color: #303030;
+  color: #0099cc;
 }
 
 h4, h2{
   margin: 10px;
 }
 
+/*Images in ImageThumb*/
 .images {
   display: inline-block;
   margin: 10px;
@@ -68,6 +70,7 @@ h4, h2{
   min-height: 100%;
 }
 
+/*Details*/
 .detailsImage {
   max-width: 450px;
 }
@@ -131,7 +134,8 @@ input:focus {
 }
 
 .signUpIn:hover {
-  background-color: gray;
+  background-color: #303030;
+  color: #0099cc;
 }
 
 .userSubmit {
@@ -162,6 +166,15 @@ input:focus {
   cursor: pointer;
 }
 
+/*favorites component*/
+.landingLink {
+  text-decoration: none;
+  color: #0099cc;
+}
+
+.landingLink:hover {
+  color: #1ac6ff;
+}
 
 /*Dropdown menu stuff*/
 /* Dropdown Button */
@@ -198,14 +211,17 @@ input:focus {
   padding: 10px;
   text-decoration: none;
   display: block;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   background-color: black;
   margin: 0;
   border-radius: 10px;
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: white}
+.dropdown-content a:hover {
+  color: #0099cc;
+  background-color: #303030;
+}
 /*.dropdown-content a:hover {background-color: #f1f1f1}*/
 
 /* Show the dropdown menu on hover */
@@ -218,7 +234,8 @@ input:focus {
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-  background-color: gray;
+  color: #0099cc;
+  background-color: #303030;
 }
 
 img {

@@ -37,12 +37,12 @@ const Favorites = React.createClass({
       })
       favs = (
         <div>
-          <h4>Awesome collection so far! Click on your images to view them better or check out the most <Link to={`/`}>recent images.</Link></h4>
+          <h4>Awesome collection so far! Click on your images to view them better or check out the most <Link to={`/`} className="landingLink">recent images.</Link></h4>
           {images}
         </div>
       );
     } else {
-      favs = (<h4>Your favorites section is empty! Feel free to check out and/or save the most <Link to={`/`}>recent images.</Link></h4>)
+      favs = (<h4>Your favorites section is empty! Feel free to check out and/or save the most <Link to={`/`} className="landingLink">recent images.</Link></h4>)
     }
     return (
       <div className="container">

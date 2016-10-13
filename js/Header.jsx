@@ -7,7 +7,6 @@ const UserActions = require('./UserActions');
 
 const Header = React.createClass({
   componentDidMount: function() {
-    console.log(this.props, 'header props')
     this.props.checkUser();
   },
 

@@ -8,6 +8,7 @@ module.exports = {
   SIGN_IN: 'signIn',
   SIGN_OUT: 'signOut',
   FAVORITES: 'favorites',
+  IN_FAVORITES: 'inFavorites',
 
   CLOSE_MODAL: 'closeModal'
 }

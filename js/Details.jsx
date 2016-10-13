@@ -4,9 +4,8 @@ const Header = require('./Header');
 const { connector } = require('./Store');
 const ReactRedux = require('react-redux');
 const ImageActions = require('./ImageActions')
+const UserActions = require('./UserActions')
 
-
-  // <SaveFavorites imageID = {this.props.params.id}/>
 const Details = React.createClass({
   getDefaultProps: function() {
     return {
@@ -14,13 +13,11 @@ const Details = React.createClass({
     };
   },
 
-  // saveToFavorites: function() {
-  //   console.log(this.props.uid)
-  //   // this.props.saveToFavorites();
-  // },
-
   componentDidMount: function(){
     this.props.setImages()
+    if(this.props.uid) {
+      this.props.checkFavorites(this.props.uid, this.props.params.id);
+    }
   },
 
   assignImage(id) {
@@ -33,9 +30,7 @@ const Details = React.createClass({
     const { title, link, description } = this.assignImage(this.props.params.id);
     let favoritesButton;
     if(this.props.uid) {
-      favoritesButton = (<SaveFavorites image = {this.assignImage(this.props.params.id)} />)
-      // favoritesButton = (<SaveFavorites imageId = {this.props.params.id} />)
-      // favoritesButton = (<button type="button" onClick = {this.saveToFavorites}>Save to Favorites</button>);
+      favoritesButton = (<SaveFavorites image = {this.assignImage(this.props.params.id)} inFavorites = {this.props.inFavorites}/>)
     } else {
       favoritesButton = (<h4>Sign Up or Sign In to save this to your favorites!</h4>);
     };
@@ -56,7 +51,8 @@ const Details = React.createClass({
 const mapStateToProps = (state) => { 
   return { 
     images: state.images,
-    uid: state.uid
+    uid: state.uid,
+    inFavorites: state.inFavorites
   }
 }
 
@@ -64,10 +60,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setImages: () => {
       dispatch(ImageActions.getImages())
+    },
+    checkFavorites: function(userId, imageId) {
+      dispatch(UserActions.checkFavorites(userId, imageId))
     }
   }
 }
 
 module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Details);
-// module.exports = Details;
-// module.exports = connector(Details)

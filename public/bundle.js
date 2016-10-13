@@ -21582,33 +21582,30 @@
 
 	var Link = _require.Link;
 
+	// stateless component
 
-	var ImageThumb = React.createClass({
-	  displayName: 'ImageThumb',
-	  render: function render() {
-	    var props = this.props;
-	    var subLink = void 0;
-	    var aLink = void 0;
-	    if (props.cover) {
-	      subLink = "http://i.imgur.com/" + props.cover + "b.jpg";
-	      aLink = "http://i.imgur.com/" + props.cover + ".jpg";
-	    } else {
-	      var len = props.link.length;
-	      subLink = props.link.substr(0, len - 4) + "b" + props.link.substr(len - 4, len);
-	      aLink = props.link.substr(0, len - 4) + props.link.substr(len - 4, len);
-	    }
-
-	    return React.createElement(
-	      Link,
-	      { to: '/details/' + this.props.id },
-	      React.createElement(
-	        'div',
-	        { className: 'images' },
-	        React.createElement('img', { alt: '', src: subLink, height: '250px', width: '250px' })
-	      )
-	    );
+	var ImageThumb = function ImageThumb(props) {
+	  var subLink = void 0;
+	  var aLink = void 0;
+	  if (props.cover) {
+	    subLink = "http://i.imgur.com/" + props.cover + "b.jpg";
+	    aLink = "http://i.imgur.com/" + props.cover + ".jpg";
+	  } else {
+	    var len = props.link.length;
+	    subLink = props.link.substr(0, len - 4) + "b" + props.link.substr(len - 4, len);
+	    aLink = props.link.substr(0, len - 4) + props.link.substr(len - 4, len);
 	  }
-	});
+
+	  return React.createElement(
+	    Link,
+	    { to: '/details/' + props.id },
+	    React.createElement(
+	      'div',
+	      { className: 'images' },
+	      React.createElement('img', { alt: '', src: subLink, height: '250px', width: '250px' })
+	    )
+	  );
+	};
 
 	module.exports = ImageThumb;
 
@@ -21638,7 +21635,6 @@
 	  displayName: 'Header',
 
 	  componentDidMount: function componentDidMount() {
-	    console.log(this.props, 'header props');
 	    this.props.checkUser();
 	  },
 
@@ -27506,7 +27502,8 @@
 	  images: [],
 	  favorites: {},
 	  email: '',
-	  uid: ''
+	  uid: '',
+	  inFavorites: false
 	};
 
 	var rootReducer = function rootReducer() {
@@ -27522,6 +27519,8 @@
 	      return signOutUser(state, action.email, action.uid, action.favorites);
 	    case C.FAVORITES:
 	      return assignFavorites(state, action.favorites);
+	    case C.IN_FAVORITES:
+	      return imageInFavorites(state, action.inFavorites);
 	    default:
 	      return state;
 	  }
@@ -27545,7 +27544,6 @@
 	var signInUser = function signInUser(state, email, uid) {
 	  var newState = {};
 	  Object.assign(newState, state, { email: email, uid: uid });
-	  console.log('blah');
 	  return newState;
 	};
 
@@ -27561,28 +27559,13 @@
 	  return newState;
 	};
 
-	// called anytime store state is updated, maps to components' props
-	// const mapStateToProps = (state) => { 
-	//   return { 
-	//     images: state.images,
-	//     uid: state.uid
-	//   }
-	// }
+	var imageInFavorites = function imageInFavorites(state, inFavorites) {
+	  var newState = {};
+	  Object.assign(newState, state, { inFavorites: inFavorites });
+	  return newState;
+	};
 
-	// //dispatch actions
-	// const mapDispatchToProps = (dispatch) => {
-	//   return {
-	//     isLoggedIn: () => {
-	//       dispatch({type: C.IS_LOGGED_IN});
-	//     }
-	//   }
-	// }
-
-	// reactRedux connects React component to a Redux store, exports as "connector" constant
-	// const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps)
-	// const connector;
 	module.exports = { store: store, rootReducer: rootReducer };
-	// module.exports = { connector, store, rootReducer }
 
 /***/ },
 /* 245 */
@@ -29087,6 +29070,7 @@
 	  SIGN_IN: 'signIn',
 	  SIGN_OUT: 'signOut',
 	  FAVORITES: 'favorites',
+	  IN_FAVORITES: 'inFavorites',
 
 	  CLOSE_MODAL: 'closeModal'
 	};
@@ -30557,7 +30541,7 @@
 	    };
 	  },
 
-	  saveToFavorites: function saveToFavorites(email, uid, image) {
+	  saveToFavorites: function saveToFavorites(uid, image) {
 	    return function (dispatch, getState) {
 	      // maybe some logic to check whether the image is already in the favorites
 
@@ -30571,6 +30555,15 @@
 	    };
 	  },
 
+	  removeFromFavorites: function removeFromFavorites(uid, image) {
+	    return function (dispatch, getState) {
+	      var updates = {};
+	      updates['/users/' + uid + '/favorites/' + image.id] = null;
+
+	      firebase.database().ref().update(updates);
+	    };
+	  },
+
 	  getFavorites: function getFavorites(userId) {
 	    return function (dispatch, getState) {
 	      firebase.database().ref('/users/' + userId + '/favorites/').once('value').then(function (snapshot) {
@@ -30578,6 +30571,19 @@
 	        var favorites = snapshot.val() || {};
 	        dispatch({ type: C.FAVORITES, favorites: favorites });
 	        // ...
+	      });
+	    };
+	  },
+
+	  checkFavorites: function checkFavorites(userId, imageId) {
+	    return function (dispatch, getState) {
+	      firebase.database().ref('/users/' + userId + '/favorites/').once('value').then(function (snapshot) {
+	        var favorites = snapshot.val() || {};
+	        if (favorites[imageId]) {
+	          dispatch({ type: C.IN_FAVORITES, inFavorites: true });
+	        } else {
+	          dispatch({ type: C.IN_FAVORITES, inFavorites: false });
+	        }
 	      });
 	    };
 	  }
@@ -31313,8 +31319,8 @@
 
 	var ReactRedux = __webpack_require__(259);
 	var ImageActions = __webpack_require__(266);
+	var UserActions = __webpack_require__(291);
 
-	// <SaveFavorites imageID = {this.props.params.id}/>
 	var Details = React.createClass({
 	  displayName: 'Details',
 
@@ -31324,13 +31330,11 @@
 	    };
 	  },
 
-	  // saveToFavorites: function() {
-	  //   console.log(this.props.uid)
-	  //   // this.props.saveToFavorites();
-	  // },
-
 	  componentDidMount: function componentDidMount() {
 	    this.props.setImages();
+	    if (this.props.uid) {
+	      this.props.checkFavorites(this.props.uid, this.props.params.id);
+	    }
 	  },
 
 	  assignImage: function assignImage(id) {
@@ -31349,9 +31353,7 @@
 
 	    var favoritesButton = void 0;
 	    if (this.props.uid) {
-	      favoritesButton = React.createElement(SaveFavorites, { image: this.assignImage(this.props.params.id) });
-	      // favoritesButton = (<SaveFavorites imageId = {this.props.params.id} />)
-	      // favoritesButton = (<button type="button" onClick = {this.saveToFavorites}>Save to Favorites</button>);
+	      favoritesButton = React.createElement(SaveFavorites, { image: this.assignImage(this.props.params.id), inFavorites: this.props.inFavorites });
 	    } else {
 	      favoritesButton = React.createElement(
 	        'h4',
@@ -31386,7 +31388,8 @@
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    images: state.images,
-	    uid: state.uid
+	    uid: state.uid,
+	    inFavorites: state.inFavorites
 	  };
 	};
 
@@ -31394,13 +31397,14 @@
 	  return {
 	    setImages: function setImages() {
 	      dispatch(ImageActions.getImages());
+	    },
+	    checkFavorites: function checkFavorites(userId, imageId) {
+	      dispatch(UserActions.checkFavorites(userId, imageId));
 	    }
 	  };
 	};
 
 	module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Details);
-	// module.exports = Details;
-	// module.exports = connector(Details)
 
 /***/ },
 /* 299 */
@@ -31418,14 +31422,35 @@
 	    var save = confirm("Are you sure you want to add this image to favorites?");
 	    // currently saving to firebase favorites
 	    if (save) {
-	      this.props.saveToFavorites(this.props.email, this.props.uid, this.props.image);
+	      this.props.saveToFavorites(this.props.uid, this.props.image);
+	    }
+	  },
+	  removeFromFavorites: function removeFromFavorites() {
+	    var remove = confirm("Are you sure you want to remove this image from your favorites?");
+	    // currently saving to firebase favorites
+	    if (remove) {
+	      this.props.removeFromFavorites(this.props.uid, this.props.image);
 	    }
 	  },
 	  render: function render() {
+	    var saveOrRemove = void 0;
+	    if (this.props.inFavorites) {
+	      saveOrRemove = React.createElement(
+	        'button',
+	        { type: 'button', onClick: this.removeFromFavorites },
+	        'Remove from Favorites'
+	      );
+	    } else {
+	      saveOrRemove = React.createElement(
+	        'button',
+	        { type: 'button', onClick: this.saveToFavorites },
+	        'Save to Favorites'
+	      );
+	    }
 	    return React.createElement(
-	      'button',
-	      { type: 'button', onClick: this.saveToFavorites },
-	      'Save to Favorites'
+	      'div',
+	      null,
+	      saveOrRemove
 	    );
 	  }
 	});
@@ -31440,15 +31465,16 @@
 	//dispatch actions
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
-	    saveToFavorites: function saveToFavorites(email, uid, image) {
-	      dispatch(UserActions.saveToFavorites(email, uid, image));
-	      // dispatch({type: C.IS_LOGGED_IN});
+	    saveToFavorites: function saveToFavorites(uid, image) {
+	      dispatch(UserActions.saveToFavorites(uid, image));
+	    },
+	    removeFromFavorites: function removeFromFavorites(uid, image) {
+	      dispatch(UserActions.removeFromFavorites(uid, image));
 	    }
 	  };
 	};
 
 	module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SaveFavorites);
-	// module.exports = SaveFavorites;
 
 /***/ },
 /* 300 */
@@ -31515,7 +31541,7 @@
 	          'Awesome collection so far! Click on your images to view them better or check out the most ',
 	          React.createElement(
 	            Link,
-	            { to: '/' },
+	            { to: '/', className: 'landingLink' },
 	            'recent images.'
 	          )
 	        ),
@@ -31528,7 +31554,7 @@
 	        'Your favorites section is empty! Feel free to check out and/or save the most ',
 	        React.createElement(
 	          Link,
-	          { to: '/' },
+	          { to: '/', className: 'landingLink' },
 	          'recent images.'
 	        )
 	      );
@@ -31593,8 +31619,6 @@
 
 	var Link = _require.Link;
 
-	// saving this for reference currently
-	// <button id="myBtn" onClick={this.openModal}>Sign Up/Sign In</button>
 
 	var ModalTest = React.createClass({
 	  displayName: 'ModalTest',
@@ -31644,7 +31668,6 @@
 	  },
 
 	  componentWillUnmount: function componentWillUnmount() {
-	    console.log('modaltest unmounted');
 	    window.removeEventListener('click', this.clickOutside);
 	  },
 
