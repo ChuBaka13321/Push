@@ -21567,7 +21567,6 @@
 	};
 
 	module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Landing);
-	// module.exports = connector(Landing);
 
 /***/ },
 /* 177 */
@@ -31465,10 +31464,6 @@
 	    var imageArray = this.props.images.filter(function (image) {
 	      return image.id === id;
 	    });
-	    // let isVideo = (imageArray[0].title.split(' ')[0] === '[Video]');
-	    // if(isVideo) {
-	    //   imageArray[0].link = "http://i.imgur.com/" + imageArray[0].cover + ".mp4"
-	    // }
 	    return imageArray[0] || { title: 'hi', link: 'stuff', description: 'k' };
 	  },
 	  render: function render() {
@@ -31490,6 +31485,9 @@
 	        { className: 'detailsImage', autoPlay: true, controls: true },
 	        React.createElement('source', { src: videoLink, type: 'video/mp4' })
 	      );
+	    } else if (cover) {
+	      var customLink = "http://i.imgur.com/" + cover + ".png";
+	      imageOrVideo = React.createElement('img', { alt: '', src: customLink, className: 'detailsImage' });
 	    } else {
 	      imageOrVideo = React.createElement('img', { alt: '', src: link, className: 'detailsImage' });
 	    }

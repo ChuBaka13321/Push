@@ -19,10 +19,6 @@ const Details = React.createClass({
 
   assignImage(id) {
     const imageArray = this.props.images.filter((image) => image.id === id);
-    // let isVideo = (imageArray[0].title.split(' ')[0] === '[Video]');
-    // if(isVideo) {
-    //   imageArray[0].link = "http://i.imgur.com/" + imageArray[0].cover + ".mp4"
-    // }
     return imageArray[0] || {title:'hi', link: 'stuff', description: 'k'};
   },
 
@@ -39,6 +35,9 @@ const Details = React.createClass({
           <source src={videoLink} type="video/mp4"/>
         </video>
       )
+    } else if (cover) {
+      let customLink = "http://i.imgur.com/" + cover + ".png"
+      imageOrVideo = (<img alt="" src={customLink} className="detailsImage" />);
     } else {
       imageOrVideo = (<img alt="" src={link} className="detailsImage" />);
     }

@@ -16,7 +16,7 @@ const Landing = React.createClass({
     this.props.setImages()
   },
 
-  render: function() {
+  render() {
     return (
       <div className="container">
         <Header />
@@ -49,4 +49,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Landing);
-// module.exports = connector(Landing);
