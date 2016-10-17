@@ -22,7 +22,6 @@ const app = express()
 
 app.use('/public', express.static('./public'))
 
-// use body parser so we can grab information from POST requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
