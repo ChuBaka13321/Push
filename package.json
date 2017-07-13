@@ -9,6 +9,9 @@
     "postinstall": "webpack -p",
     "start": "node app.js"
   },
+  "engines": {
+    "node": "6.11.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ChuBaka13321/Push.git"
